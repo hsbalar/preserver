@@ -1,0 +1,39 @@
+<div class="">
+  <div class='container note' [dragula]='"another-bag"' [dragulaModel]='many'>
+    <spinner *ngIf="spinner"></spinner>
+    <div *ngFor='let text of notes' class="{{ 'panel panel-default ' + text.doc.color}}">
+      <div class="panel-body my-note">
+        <p><strong>{{text.doc.title}}</strong></p>
+        <p> {{text.doc.note}} </p>
+      </div>
+      <div class="{{ 'panel-footer ' + text.doc.color}}">
+        <ul class="note-footer">
+          <li><a href="javascript:void(0)" class="btn btn-link btn-raised"
+             title="Unarchive" (click)="unArchive(text)">
+            <i class="fa fa-upload"></i>        
+          </a></li>
+          <li class="dropup">
+            <a data-target="#" class="btn btn-link btn-raised dropup"
+              title="Color" data-toggle="dropdown">
+              <i class="fa fa-th-large"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-default', text)" class="btn btn-default btn-fab-mini"><i class=""></i></a></li>
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-primary', text)" class="btn btn-primary btn-fab-mini"><i class=""></i></a></li>
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-success', text)" class="btn btn-success btn-fab-mini"><i class=""></i></a></li>
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-info', text)" class="btn btn-info btn-fab-mini"><i class=""></i></a></li>
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-warning', text)" class="btn btn-warning btn-fab-mini"><i class=""></i></a></li>
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-danger', text)" class="btn btn-danger btn-fab-mini"><i class=""></i></a></li>
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-darkgray', text)" class="btn btn-darkgray btn-fab-mini"><i class=""></i></a></li>
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-primary-old', text)" class="btn btn-primary-old btn-fab-mini"><i class=""></i></a></li>              
+            </ul>
+          </li>
+          <li><a href="javascript:void(0)" class="btn btn-link btn-raised"
+             title="Delete" (click)="deleteNote(text)">
+            <i class="fa fa-trash"></i>          
+          </a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

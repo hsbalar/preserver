@@ -1,0 +1,46 @@
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.modal .modal-body {
+   max-height: 775px !important;
+   overflow: hidden !important;
+}
+
+.edit-saved-input {
+  background-image: linear-gradient(#009688,#009688)!important;
+  font-family: 'Roboto Condensed','Droid Sans',arial,sans-serif;
+  font-size: 17px;
+  font-weight: bold;
+  line-height: 23px;
+  min-height: 38px;  
+}
+
+.edit-saved-textera {
+  background-image: none;  
+  word-wrap: break-word;
+  font-size: 17px;
+  height: auto;
+  overflow-y: auto;
+  resize: none!important;
+  min-height: 650px !important;
+ }
+ 
+ .modal-content .modal-body {
+    padding: 0px 0px 5px 14px!important;
+ }

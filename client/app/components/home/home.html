@@ -1,0 +1,75 @@
+<div class="">
+  <div class="container">
+      <div class="panel panel-default note-editor">
+        <div class="panel-body">
+          <div class="form-group label-floating" *ngIf="inputFocusClass">
+             <input type="text" class="form-control" placeholder="Title" [(ngModel)]="draft.title" >
+          </div>          
+          <div class="form-group label-floating">
+             <textarea class="form-control" #textarea autosize placeholder="Write a note" [(ngModel)]="draft.note" (focus)="_setInputFocus(true)"></textarea>
+          </div>
+          <div class="form-group" *ngIf="inputFocusClass">
+            <button class="btn btn-primary btn-sm pull-right" (click)="saveNote($event, textarea)">Save</button>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class='container note' [dragula]='"another-bag"' [dragulaModel]='many'>
+    <spinner *ngIf="spinner"></spinner>
+    <div *ngFor='let text of notes' class="{{ 'panel panel-default ' + text.doc.color}}" #noteRow>
+      <div data-toggle="modal" [attr.data-target]="'#' + text.doc._id" (click)="editModalNoteClick(text)">
+        <div class="panel-body my-note module line-clamp">
+          <p><strong>{{text.doc.title}}</strong></p>
+          <p> {{text.doc.note}} </p>
+        </div>
+      </div>
+      <div class="{{ 'panel-footer ' + text.doc.color}}">
+        <ul class="note-footer">
+          <li><a href="javascript:void(0)" class="btn btn-link btn-raised"
+             title="Archive" (click)="makeArchive(text)">
+            <i class="fa fa-download"></i>        
+          </a></li>
+          <li class="dropup">
+            <a data-target="#" class="btn btn-link btn-raised dropup"
+              title="Color" data-toggle="dropdown">
+              <i class="fa fa-th-large"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-default', text)" class="btn btn-default btn-fab-mini"><i class=""></i></a></li>
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-primary', text)" class="btn btn-primary btn-fab-mini"><i class=""></i></a></li>
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-success', text)" class="btn btn-success btn-fab-mini"><i class=""></i></a></li>
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-info', text)" class="btn btn-info btn-fab-mini"><i class=""></i></a></li>
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-warning', text)" class="btn btn-warning btn-fab-mini"><i class=""></i></a></li>
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-danger', text)" class="btn btn-danger btn-fab-mini"><i class=""></i></a></li>
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-darkgray', text)" class="btn btn-darkgray btn-fab-mini"><i class=""></i></a></li>
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-primary-old', text)" class="btn btn-primary-old btn-fab-mini"><i class=""></i></a></li>              
+            </ul>
+          </li>
+          <li><a href="javascript:void(0)" class="btn btn-link btn-raised"
+             title="Delete" (click)="deleteNote(text, noteRow)">
+            <i class="fa fa-trash"></i>          
+          </a></li>
+        </ul>
+      </div>
+      <div class="modal fade" id="{{text.doc._id}}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="{{'modal-content edit-saved ' + text.doc.color}}">
+            <div class="modal-header">
+              <h4 class="modal-title">
+                <div class="form-group label-floating">
+                <input type="text" class="form-control edit-saved-input" placeholder="Title" [(ngModel)]="editNoteDraft.title" [value]="text.doc.title ? text.doc.title : ''" >
+                </div>                
+              </h4>
+            </div>
+            <div class="modal-body">
+              <textarea class="form-control edit-saved-textera" #editSavedTextarea modaleditorautosize placeholder="Write a note" [(ngModel)]="editNoteDraft.note" [value]="text.doc?.note"></textarea>              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" (click)="updateModalNote(text)">Done</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

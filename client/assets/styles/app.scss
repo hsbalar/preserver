@@ -1,0 +1,204 @@
+
+.gu-mirror{position:fixed!important;margin:0!important;z-index:9999!important;opacity:.8;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";filter:alpha(opacity=80)}.gu-hide{display:none!important}.gu-unselectable{-webkit-user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;user-select:none!important}.gu-transit{opacity:.2;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";filter:alpha(opacity=20)}
+
+.note .panel {
+  margin: 15px;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.gu-mirror {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
+.note-editor {
+  max-width: 800px;
+  margin: auto;
+}
+
+.note-editor .btn {
+  margin: 0px!important;
+}
+
+.note-editor textarea {
+  font-size: 17px;
+  word-wrap: break-word;
+}
+
+.my-note p {
+  font-family: 'Roboto Condensed','Droid Sans',arial,sans-serif;
+  font-size: 17px;
+  outline: none;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: hidden;
+  
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  max-height: 320px;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+.note-editor input {
+  font-family: 'Roboto Condensed','Droid Sans',arial,sans-serif;
+  font-size: 17px;
+  font-weight: bold;
+  line-height: 23px;
+  min-height: 38px;  
+}
+
+.note-editor textarea, .note-editor input {
+  resize: none;
+  background-image: linear-gradient(#009688,#009688),linear-gradient(rgba(255,255,255,.84),rgba(255,255,255,.84))!important;
+}
+  .panel-footer {
+    opacity: 0;
+     -webkit-transition-duration:.218s;
+    transition-duration: .218s;
+    -webkit-transition-property: opacity;
+    transition-property: opacity;
+    -webkit-transition-timing-function: ease-in;
+    transition-timing-function: ease-in;
+  }
+
+.panel:hover {
+ .panel-footer {
+    opacity: 1;
+  }
+}
+
+.panel-footer {
+  background-color: transparent!important;
+  border: none!important;
+  padding: 0px!important;
+}
+
+.panel-footer .btn {
+  box-shadow: none!important;
+  padding: 10px 10px!important;
+  margin: 0px 6px 0px 6px!important;
+  color: #747474;
+}
+
+.panel-footer ul {
+  list-style: none;
+  padding: 0px;
+}
+
+.panel-footer ul > li {
+  display: -webkit-inline-flex;  
+}
+
+.panel-footer .dropdown-menu .btn-default {
+  border-radius: 0px;
+  border: 1px solid darkgray;
+}
+
+.panel-footer .dropdown-menu .btn-success {
+  border-radius: 0px;
+  background-color: rgb(204, 255, 144);
+  border: 1px solid rgb(204, 255, 144);
+}
+
+.panel-footer .dropdown-menu .btn-primary {
+  border-radius: 0px;
+  border: 1px solid #009688;
+}
+
+.panel-footer .dropdown-menu .btn-info {
+  border-radius: 0px;
+  border: 1px solid rgb(128, 216, 255);
+}
+
+.panel-footer .dropdown-menu .btn-warning {
+  border-radius: 0px;
+  border: 1px solid rgb(255, 138, 128);
+}
+
+.panel-footer .dropdown-menu .btn-danger {
+  border-radius: 0px;
+  border: 1px solid #f55549;
+}
+
+.panel-footer .dropdown-menu .btn-darkgray {
+  border-radius: 0px;
+  background-color: rgb(207, 216, 220);
+  border: 1px solid rgb(207, 216, 220);
+}
+
+.panel-footer .dropdown-menu .btn-darkgray:hover {
+  background-color: darkgray;
+}
+
+.panel-footer .dropdown-menu .btn-primary-old {
+  border-radius: 0px;
+  background-color: rgb(255, 209, 128);
+  border: 1px solid rgb(255, 209, 128);
+}
+
+.panel-footer .dropdown-menu .btn-primary-old:hover {
+  background-color: rgb(255, 209, 128);
+}
+
+.panel-footer .open > .dropdown-menu {
+  padding: 10px 5px;
+}
+
+.label-default {
+  background-color: #FFF;
+}
+
+.label-primary-old {
+  background-color: rgb(255, 209, 128);
+}
+
+.label-primary {
+  background-color: #009688;  
+}
+
+.label-darkgray {
+  background-color: rgb(207, 216, 220);
+}
+
+.label-warning {
+  background-color: rgb(255, 138, 128);
+}
+
+.label-info {
+  background-color: rgb(128, 216, 255)
+}
+
+.label-success {
+  background-color: rgb(204, 255, 144);
+}
+
+.bs-docs-section {
+  margin-top: 8em
+}
+
+.bs-component {
+  position: relative
+}
+
+.bs-component .modal {
+  position: relative;
+  top: auto;
+  right: auto;
+  left: auto;
+  bottom: auto;
+  z-index: 1;
+  display: block
+}
+
+.bs-component .modal-dialog {
+  width: 90%
+}
+
+.bs-component .popover {
+  position: relative;
+  display: inline-block;
+  width: 220px;
+  margin: 20px
+}

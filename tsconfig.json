@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "noImplicitAny": false,
+    "outDir": "dist",
+    "rootDir": ".",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node"
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "typings/main.d.ts",
+    "typings/main"
+  ]
+}

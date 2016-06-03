@@ -1,0 +1,16 @@
+#!/bin/env node
+
+const chalk = require("chalk");
+
+// register babel hook
+require("babel-register")();
+
+// start the server
+require("../server").start()
+.then((app) => {
+  console.log("Server started: " + chalk.yellow("http://localhost:3000"));
+}).catch((err) => {
+  console.error(chalk.bold.red("Unable to start server."));
+  console.error(err);
+  process.exit(-1);
+});
