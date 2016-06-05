@@ -32,6 +32,6 @@ export class NotesTableService {
   }
   
   updateNote(note) {
-    return this.localDB.put(note.doc);
+    return this.localDB.put(note);
   }
 }
