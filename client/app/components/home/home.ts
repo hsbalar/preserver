@@ -41,7 +41,7 @@ export class Home {
       this.onDropModel(value.slice(1));
     });
     dragulaService.drop.subscribe((value) => {
-      this.onDrop(value.slice(1));
+      this.onDrop(value);
     });
     dragulaService.removeModel.subscribe((value) => {
       this.onRemoveModel(value.slice(1));
@@ -58,7 +58,7 @@ export class Home {
   _setInputFocus(isFocus:boolean) {
     this.inputFocusClass = isFocus;
   }
-  
+
   private onDropModel(args) {
     let [el, target, source] = args;
     // do something else
@@ -71,7 +71,47 @@ export class Home {
   
   
   private onDrop(args) {
-    let [e, el] = args;
+    let [e, source, ele1, ele2, target] = args;
+    let targetData = this.notes.filter((row) => {
+      return row.doc._id === target.id;
+    }, [0]);
+    let sourceData = this.notes.filter((row) => {
+      return row.doc._id === source.id;
+    }, [0]);
+
+    if (!_.isEmpty(targetData) && !_.isEmpty(sourceData)) {
+      let [updateSource] = sourceData;
+      let [updateTaget] = targetData;
+      
+      let setSource = {
+        _id: updateSource.doc._id,
+        _rev: updateSource.doc._rev,        
+        title: updateTaget.doc.title,
+        note: updateTaget.doc.note,
+        color: updateTaget.doc.color
+      };
+      let setTarget = {
+        _id: updateTaget.doc._id,
+        _rev: updateTaget.doc._rev,
+        title: updateSource.doc.title,
+        note: updateSource.doc.note,
+        color: updateSource.doc.color
+      };      
+      
+      this._notesService.updateNote(setSource)
+      .then(res => {
+        console.log("source updated");
+      }, err => {
+        console.log("Error", err);
+      });
+      
+      this._notesService.updateNote(setTarget)
+      .then(res => {
+        console.log("target updated");
+      }, err => {
+        console.log("Error", err);
+      });
+    }
   }
   
   ngOnDestroy() {
@@ -135,7 +175,7 @@ export class Home {
   setNoteColor(color, note) {
     if (note.doc.color != color) {
       note.doc.color = color;    
-      this._notesService.updateNote(note)
+      this._notesService.updateNote(note.doc)
         .then(res => {          
           console.log(res);
           this.refreshNotesTables();
@@ -148,7 +188,7 @@ export class Home {
   updateModalNote(note) {
     note.doc.note = this.editNoteDraft.note;
     note.doc.title = this.editNoteDraft.title;
-    this._notesService.updateNote(note)
+    this._notesService.updateNote(note.doc)
       .then(res => {
         this.editNoteDraft = {};
         this.refreshNotesTables();
