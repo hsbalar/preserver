@@ -7,13 +7,14 @@ import { NotesTable } from './notes_table';
 export var ARCHIVE_NOTES_TABLES: NotesTable[] = [];
 
 let localDB = new PouchDB('archive_notes_table');
+let orderDB = new PouchDB('archive_notes_order');
 
 @Injectable()
 export class ArchiveNotesTableService {
   private archive_notes_tables_source = new BehaviorSubject<NotesTable[]>([]);
   archive_notes_tables$ = this.archive_notes_tables_source.asObservable();
   localDB = localDB;
-    
+  order = orderDB;
   constructor() {}
     
   getNotes() {
@@ -28,18 +29,21 @@ export class ArchiveNotesTableService {
   }
   
   deleteNote(note) {
-    return this.localDB.remove(note.doc);
+    return this.localDB.remove(note);
   }
-
-  setNoteColor(color, note) {
-    let mydoc = {
-      _id: note.doc._id,
-      _rev: note.doc._rev,
-      title: note.doc.title,
-      note: note.doc.note,
-      label: note.doc.label,
-      color: color
-    };
-    return this.localDB.put(mydoc);
+  
+  updateNote(note) {
+    return this.localDB.put(note);
+  }
+  
+  getOrder(order) {
+    var docs = this.order.allDocs({
+      include_docs: true
+    });
+    return docs;
+  }
+  
+  saveOrder(order) {
+    return this.order.put(order);
   }
 }

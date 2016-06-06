@@ -1,4 +1,45 @@
 <div class="">
+  <div class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <ul class="navbar-toggle">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="glyphicon glyphicon-option-vertical"></i></a>
+            <ul class="dropdown-menu">
+
+              <li class="dropdown-header">Preferences</li>
+              <li><a [routerLink]="['/Home']">My Notes</a></li>
+              <li><a [routerLink]="['/Archive']">Archive Notes</a></li>            
+              <li role="separator" class="divider"></li>
+              <li><a href="javascript:void(0)">Settings</a></li>
+            </ul>
+          </li>
+        </ul>
+        <a class="navbar-brand" href="javascript:void(0)">Notes</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="javascript:void(0)" (click)="displayTypeChange()">
+              <i class="{{displayList ? 'fa fa-bars' : 'fa fa-th'}}"></i>
+            </a>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="glyphicon glyphicon-option-vertical"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-header">Preferences</li>
+              <li><a href="javascript:void(0)" [routerLink]="['/Home']">My Notes</a></li>
+              <li><a href="javascript:void(0)" [routerLink]="['/Archive']">Archive Notes</a></li>
+              <li class="divider"></li>
+              <li><a href="javascript:void(0)">Settings</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
   <div class="container">
       <div class="panel panel-default note-editor">
         <div class="panel-body">
@@ -15,9 +56,9 @@
       </div>
   </div>
   <spinner *ngIf="spinner"></spinner>
-  <div class='container note' [dragula]='"another-bag"' [dragulaModel]='many'>
-    <div *ngFor='let text of notes' class="{{ 'panel panel-default ' + text.doc.color}}" [attr.id]="text.doc._id" #noteRow>
-      <div data-toggle="modal" [attr.data-target]="'#modal' + text.doc._id" (click)="editModalNoteClick(text)">
+  <div class="{{ displayList ? 'container note' : 'container note grid-container'}}" [dragula]='"another-bag"' [dragulaModel]='notes'>
+    <div *ngFor='let text of notes' class="{{ displayList ? 'panel panel-default ' + text.doc.color : 'panel panel-default grid-item ' + text.doc.color}}" #noteRow [attr.id]="text.doc._id">
+      <div data-toggle="modal" [attr.data-target]="'#note' + text.doc._id" (click)="editModalNoteClick(text)">
         <div class="panel-body my-note module line-clamp">
           <p><strong>{{text.doc.title}}</strong></p>
           <p> {{text.doc.note}} </p>
@@ -51,7 +92,7 @@
           </a></li>
         </ul>
       </div>
-      <div class="modal fade" id="{{'modal' + text.doc._id}}" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal fade" id="{{'note' + text.doc._id}}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
           <div class="{{'modal-content edit-saved ' + text.doc.color}}">
             <div class="modal-header">

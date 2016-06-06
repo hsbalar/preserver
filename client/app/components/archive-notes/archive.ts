@@ -1,7 +1,9 @@
-import {Component, Directive, OnInit} from '@angular/core';
+import {Component, Directive, OnInit, ElementRef, AfterViewInit} from '@angular/core';
+import {Route, RouteConfig, ROUTER_DIRECTIVES} from '@angular/router-deprecated';
 
 import {Subscription} from 'rxjs/Subscription';
 import * as _ from 'lodash';
+import * as $ from 'jquery';
 
 import {Dragula} from '../../directives/dragula';
 import {DragulaService} from '../../providers/dragula';
@@ -19,25 +21,28 @@ const template: string = require("./archive.html");
   selector: 'archive',
   template: template,
   providers: [DragulaService, ArchiveNotesTableService, NotesTableService],
-  directives: [Dragula, FluidHeightDirective, Spinner]
+  directives: [Dragula, FluidHeightDirective, Spinner, ROUTER_DIRECTIVES]
 })
 export class Archive{
-  public notes: any;
-  public draft: any;
+public notes: any;
+  public orderNotes: any;
+  public editNoteDraft: any;
   public spinner: boolean = true;
-  inputFocusClass: boolean = false;
+  public displayList: boolean = false; 
 
   notes_table = NOTES_TABLE;
   subscription:Subscription;
-  
-  constructor(private dragulaService: DragulaService, private _notesService: NotesTableService, private _archiveNotesService: ArchiveNotesTableService) {
+  order:any;
+  constructor(private elementRef: ElementRef, private dragulaService: DragulaService, private _notesService: NotesTableService, private _archiveNotesService: ArchiveNotesTableService) {
     this.notes = [];
-    this.draft = {};
+    this.editNoteDraft = {};
+    this.order = [];
+    this.orderNotes = [];
     dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value.slice(1));
     });
     dragulaService.drop.subscribe((value) => {
-      this.onDrop(value.slice(1));
+      this.onDrop(value);
     });
     dragulaService.removeModel.subscribe((value) => {
       this.onRemoveModel(value.slice(1));
@@ -51,13 +56,19 @@ export class Archive{
     this.refreshNotesTables();
   }
 
-  _setInputFocus(isFocus:boolean) {
-    this.inputFocusClass = isFocus;
+  ngAfterViewInit() {
   }
   
   private onDropModel(args) {
     let [el, target, source] = args;
     // do something else
+    
+    let order = []; 
+    this.notes.forEach(row => {
+      order.push(row.doc._id);
+    });
+
+    localStorage.setItem('archiveOrder', JSON.stringify(order));
   }
 
   private onRemoveModel(args) {
@@ -78,67 +89,114 @@ export class Archive{
     this._archiveNotesService.getNotes().then(
       alldoc => {
         this.notes_table = alldoc.rows;
-        this.notes = this.notes_table;
-        this.spinner = false;   
+        let testNotes = [];
+        testNotes = this.notes_table;
+        if (localStorage.getItem('archiveOrder')) {
+          this.order = JSON.parse(localStorage.getItem('archiveOrder'));
+        }
+        this.notes = [];
+        this.order.forEach(el => {
+          testNotes.forEach(row => {
+            if (String(row.doc._id) === String(el)) {
+              this.notes.push(row);
+            }
+          });
+        });
+        this.spinner = false;
       },
       err => {
         this.spinner = false;        
       }
     );
   }
-  
-  saveNote(e) {
-    if (_.trim(this.draft.title) || _.trim(this.draft.note)) {
-      this.draft._id = 'note_' + Math.floor(Date.now() / 1000);
-      this.draft.color = "label-info";
-      this._archiveNotesService.saveNote(this.draft)
+    
+  deleteNote(note, noteRow) {
+    noteRow.style.transition = "all 1s ease-in-out";
+    noteRow.style.opacity = "0";
+    setTimeout(() => {
+      this._archiveNotesService.deleteNote(note.doc)
         .then(res => {
-          this.draft = {};
-          this.inputFocusClass = false;         
+          this.deleteFromOrder(note);
           this.refreshNotesTables();
         }, err => {
           console.log("Error", err);
         });
-    } else {
-      this.inputFocusClass = false;
-    }
-  }
-  
-  deleteNote(note) {
-    this._archiveNotesService.deleteNote(note)
-      .then(res => {          
-        this.refreshNotesTables();
-      }, err => {
-        console.log("Error", err);
-      });
+    }, 300);
   }
   
   setNoteColor(color, note) {
-    this._archiveNotesService.setNoteColor(color, note)
-      .then(res => {          
-        console.log(res);
+    if (note.doc.color != color) {
+      note.doc.color = color;    
+      this._archiveNotesService.updateNote(note.doc)
+        .then(res => {          
+          this.refreshNotesTables();
+        }, err => {
+          console.log("Error", err);
+        });
+    }
+  }
+  
+  updateModalNote(note) {
+    note.doc.note = this.editNoteDraft.note;
+    note.doc.title = this.editNoteDraft.title;
+    this._archiveNotesService.updateNote(note.doc)
+      .then(res => {
+        this.editNoteDraft = {};
         this.refreshNotesTables();
       }, err => {
+        this.editNoteDraft = {};        
         console.log("Error", err);
       });
   }
   
-   unArchive(note) {
-    this._archiveNotesService.deleteNote(note)
-      .then(res => {          
-        this.refreshNotesTables();
-      }, err => {
-        console.log("Error", err);
-      });
-    let archive_note = note;
-    delete archive_note.doc._rev;
-    this._notesService.saveNote(archive_note.doc)
-      .then(res => {
-        
-      }, err => {
-        
-      });
+  editModalNoteClick(note) {
+    this.editNoteDraft.title = note.doc.title;
+    this.editNoteDraft.note = note.doc.note;         
+  }
+
+  unArchive(note) {
+      this._archiveNotesService.deleteNote(note)
+        .then(res => {      
+          this.deleteFromOrder(note);    
+          this.refreshNotesTables();
+        }, err => {
+          console.log("Error", err);
+        });
+      let archive_note = note;
+      delete archive_note.doc._rev;
+      this._archiveNotesService.saveNote(archive_note.doc)
+        .then(res => {
+          this.updateNotesOrder(archive_note.doc);
+        }, err => {
+          
+        });
+    }
+  
+  displayTypeChange() {
+    this.displayList = this.displayList ? false : true;
+  }
+  
+  deleteFromOrder(note) {
+    let index = this.order.indexOf(this.order.filter(row => {
+      return String(row) === String(note.doc._id);
+    })[0]);
+    if (index !== -1) {
+      this.order.splice(index, 1);
+      localStorage.setItem('archiveOrder', JSON.stringify(this.order));
+    }
+  }
+  
+  updateNotesOrder(draft) {
+    let newOrder = [];
+    if (localStorage.getItem('order')) {
+      newOrder = JSON.parse(localStorage.getItem('order'));
+      newOrder.unshift(draft._id);
+    } else {
+      newOrder.push(draft._id);
+    }
+    localStorage.setItem("order", JSON.stringify(newOrder));
   }
 }
 
 let NOTES_TABLE: NotesTable[] = []
+
