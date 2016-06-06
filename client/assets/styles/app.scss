@@ -2,7 +2,7 @@
 .gu-mirror{position:fixed!important;margin:0!important;z-index:9999!important;opacity:.8;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";filter:alpha(opacity=80)}.gu-hide{display:none!important}.gu-unselectable{-webkit-user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;user-select:none!important}.gu-transit{opacity:.2;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";filter:alpha(opacity=20)}
 
 .note .panel {
-  margin: 15px;
+  margin: 8px;
   transition: opacity 0.4s ease-in-out;
 }
 
@@ -15,6 +15,7 @@
 .note-editor {
   max-width: 800px;
   margin: auto;
+  margin-bottom: 20px;
 }
 
 .note-editor .btn {
@@ -36,8 +37,7 @@
   
   text-overflow: ellipsis;
   display: -webkit-box;
-  max-height: 320px;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 12;
   -webkit-box-orient: vertical;
 }
 
@@ -114,7 +114,8 @@
 
 .panel-footer .dropdown-menu .btn-warning {
   border-radius: 0px;
-  border: 1px solid rgb(255, 138, 128);
+  background-color: #FF8A80;
+  border: 1px solid #FF8A80;
 }
 
 .panel-footer .dropdown-menu .btn-danger {
@@ -201,4 +202,32 @@
   display: inline-block;
   width: 220px;
   margin: 20px
+}
+
+@media only screen and (max-width: 767px) {
+
+  .navbar-default .navbar-toggle {
+    border: none;
+  }
+
+  .dropdown {
+    list-style: none;
+
+    a {
+      color: rgb(215, 238, 236);
+    }
+  }
+
+	.open > .dropdown-menu {
+	  display: block;
+	  left: -128px;
+    margin-right: 5px;
+		border-top-left-radius: 0em;
+		border-top-right-radius: 0em;
+	}
+}
+
+.masonry-container {
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
 }

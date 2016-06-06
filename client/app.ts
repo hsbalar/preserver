@@ -1,4 +1,5 @@
 import './assets/styles/app.scss';
+import './assets/styles/main.scss';
 
 import 'rxjs/Rx';
 
