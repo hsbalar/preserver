@@ -1,4 +1,5 @@
 import {Component, Directive, OnInit, ElementRef} from '@angular/core';
+import {Route, RouteConfig, ROUTER_DIRECTIVES} from '@angular/router-deprecated';
 
 import {Subscription} from 'rxjs/Subscription';
 import * as _ from 'lodash';
@@ -17,14 +18,15 @@ const template: string = require("./home.html");
 const style: string = require("./home.scss");
 
 @Component({
-  selector: 'home',
+  selector: 'Home',
   styles: [style],
   template: template,
   providers: [DragulaService, NotesTableService, ArchiveNotesTableService],
-  directives: [Dragula, FluidHeightDirective, Spinner]
+  directives: [Dragula, FluidHeightDirective, Spinner, ROUTER_DIRECTIVES]
 })
 export class Home {
   public notes: any;
+  public orderNotes: any;
   public draft: any;
   public editNoteDraft: any;
   public spinner: boolean = true;
@@ -32,16 +34,18 @@ export class Home {
 
   notes_table = NOTES_TABLE;
   subscription:Subscription;
-  
+  order:any;
   constructor(private elementRef: ElementRef, private dragulaService: DragulaService, private _notesService: NotesTableService, private _archiveService: ArchiveNotesTableService) {
     this.notes = [];
     this.draft = {};
     this.editNoteDraft = {};
+    this.order = [];
+    this.orderNotes = [];
     dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value.slice(1));
     });
     dragulaService.drop.subscribe((value) => {
-      this.onDrop(value.slice(1));
+      this.onDrop(value);
     });
     dragulaService.removeModel.subscribe((value) => {
       this.onRemoveModel(value.slice(1));
@@ -62,6 +66,14 @@ export class Home {
   private onDropModel(args) {
     let [el, target, source] = args;
     // do something else
+    
+    let order = []; 
+    this.notes.forEach(row => {
+      order.push(row.doc._id);
+    });
+
+console.log(order)
+    localStorage.setItem("order", JSON.stringify(order));
   }
 
   private onRemoveModel(args) {
@@ -82,7 +94,19 @@ export class Home {
     this._notesService.getNotes().then(
       alldoc => {
         this.notes_table = alldoc.rows;
-        this.notes = this.notes_table;
+        let testNotes = [];
+        testNotes = this.notes_table;
+        if (localStorage.getItem('order')) {
+          this.order = JSON.parse(localStorage.getItem("order"));
+        }
+        this.notes = [];
+        this.order.forEach(el => {
+          testNotes.forEach(row => {
+            if (String(row.doc._id) === String(el)) {
+              this.notes.push(row);
+            }
+          });
+        });
         this.spinner = false;
       },
       err => {
@@ -95,14 +119,22 @@ export class Home {
     if (_.trim(this.draft.title) || _.trim(this.draft.note)) {
       this.draft._id = 'note_' + Math.floor(Date.now() / 1000);
       this.draft.color = "label-default";
+      this.draft.time = _.now();
+
       this._notesService.saveNote(this.draft)
         .then(res => {
-          this.draft = {};
-          this.inputFocusClass = false;         
-          this.refreshNotesTables();
           notetextarea.placeholder = "Write a note";
           notetextarea.style.height = "auto";      
           notetextarea.style.height = "48px";
+
+          let newOrder = JSON.parse(localStorage.getItem('order'));
+          console.log(newOrder)
+          newOrder.unshift(this.draft._id);
+          localStorage.setItem("order", JSON.stringify(newOrder));
+
+          this.draft = {};
+          this.inputFocusClass = false;         
+          this.refreshNotesTables();         
         }, err => {
           this.draft = {};          
           console.log("Error", err);
@@ -117,27 +149,35 @@ export class Home {
       notetextarea.value = null;      
       this.inputFocusClass = false;
     }
+    
+    
   }
   
   deleteNote(note, noteRow) {
     noteRow.style.transition = "all 1s ease-in-out";
     noteRow.style.opacity = "0";
     setTimeout(() => {
-      this._notesService.deleteNote(note)
-        .then(res => {    
+      this._notesService.deleteNote(note.doc)
+        .then(res => {
+          let index = this.order.indexOf(this.order.filter(row => {
+            return String(row) === String(note.doc._id);
+          })[0]);
+          if (index !== -1) {
+            this.order.splice(index, 1);
+            localStorage.setItem("order", JSON.stringify(this.order));
+          }
           this.refreshNotesTables();
         }, err => {
           console.log("Error", err);
         });
-    }, 500);
+    }, 300);
   }
   
   setNoteColor(color, note) {
     if (note.doc.color != color) {
       note.doc.color = color;    
-      this._notesService.updateNote(note)
+      this._notesService.updateNote(note.doc)
         .then(res => {          
-          console.log(res);
           this.refreshNotesTables();
         }, err => {
           console.log("Error", err);
@@ -148,7 +188,7 @@ export class Home {
   updateModalNote(note) {
     note.doc.note = this.editNoteDraft.note;
     note.doc.title = this.editNoteDraft.title;
-    this._notesService.updateNote(note)
+    this._notesService.updateNote(note.doc)
       .then(res => {
         this.editNoteDraft = {};
         this.refreshNotesTables();
@@ -164,7 +204,7 @@ export class Home {
   }
 
   makeArchive(note) {
-    this._notesService.deleteNote(note)
+    this._notesService.deleteNote(note.doc)
       .then(res => {          
         this.refreshNotesTables();
       }, err => {

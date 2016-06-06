@@ -14,10 +14,10 @@
         </div>
       </div>
   </div>
-  <div class='container note' [dragula]='"another-bag"' [dragulaModel]='many'>
-    <spinner *ngIf="spinner"></spinner>
-    <div *ngFor='let text of notes' class="{{ 'panel panel-default ' + text.doc.color}}" #noteRow>
-      <div data-toggle="modal" [attr.data-target]="'#' + text.doc._id" (click)="editModalNoteClick(text)">
+  <spinner *ngIf="spinner"></spinner>
+  <div class='container note grid-container' [dragula]='"another-bag"' [dragulaModel]='notes'>
+    <div *ngFor='let text of notes' class="{{ 'panel panel-default grid-item ' + text.doc.color}}" #noteRow [attr.id]="text.doc._id">
+      <div data-toggle="modal" [attr.data-target]="'#note' + text.doc._id" (click)="editModalNoteClick(text)">
         <div class="panel-body my-note module line-clamp">
           <p><strong>{{text.doc.title}}</strong></p>
           <p> {{text.doc.note}} </p>
@@ -51,7 +51,7 @@
           </a></li>
         </ul>
       </div>
-      <div class="modal fade" id="{{text.doc._id}}" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal fade" id="{{'note' + text.doc._id}}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
           <div class="{{'modal-content edit-saved ' + text.doc.color}}">
             <div class="modal-header">

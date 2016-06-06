@@ -44,3 +44,19 @@
  .modal-content .modal-body {
     padding: 0px 0px 5px 14px!important;
  }
+
+// *, *:before, *:after {
+//   box-sizing: border-box !important;
+// }
+
+.grid-container {
+  -moz-column-width: 16em;
+  -webkit-column-width: 16em;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+.grid-item {
+  display: inline-block;
+  width: 100%;
+}

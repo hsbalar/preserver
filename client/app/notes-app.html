@@ -1,14 +1,30 @@
 <div class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
+      <ul class="navbar-toggle">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="glyphicon glyphicon-option-vertical"></i></a>
+          <ul class="dropdown-menu">
+
+            <li class="dropdown-header">Preferences</li>
+            <li><a [routerLink]="['/Home']">My Notes</a></li>
+            <li><a [routerLink]="['/Archive']">Archive Notes</a></li>            
+            <li role="separator" class="divider"></li>
+            <li><a href="javascript:void(0)">Settings</a></li>
+          </ul>
+        </li>
+      </ul>
       <a class="navbar-brand" href="javascript:void(0)">Notes</a>
     </div>
+    <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-right">
+        <li><a href="javascript:void(0)"><i class="glyphicon glyphicon-menu-hamburger"></i></a></li>
         <li class="dropdown">
           <a href="javascript:void(0)" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="glyphicon glyphicon-option-vertical"></i>
           </a>
           <ul class="dropdown-menu">
+            <li class="dropdown-header">Preferences</li>
             <li><a href="javascript:void(0)" [routerLink]="['/Home']">My Notes</a></li>
             <li><a href="javascript:void(0)" [routerLink]="['/Archive']">Archive Notes</a></li>
             <li class="divider"></li>
@@ -16,6 +32,7 @@
           </ul>
         </li>
       </ul>
+    </div>
   </div>
 </div>
 <div>
