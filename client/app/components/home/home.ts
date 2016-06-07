@@ -1,16 +1,17 @@
-import {Component, Directive, OnInit, ElementRef, AfterViewInit} from '@angular/core';
-import {Route, RouteConfig, ROUTER_DIRECTIVES} from '@angular/router-deprecated';
+import { Component, Directive, OnInit } from '@angular/core';
+import { Route, RouteConfig, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
+import { NotificationsService, SimpleNotificationsComponent} from "angular2-notifications";
 
-import {Subscription} from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
-import * as $ from 'jquery';
 
-import {Dragula} from '../../directives/dragula';
-import {DragulaService} from '../../providers/dragula';
+import { Dragula } from '../../directives/dragula';
+import { DragulaService } from '../../providers/dragula';
 import { FluidHeightDirective } from '../../directives/fluid-height';
 
 import { NotesTable } from '../../services/notes_table';
 import { NotesTableService } from '../../services/notes_table.service';
+import { BinNotesTableService } from '../../services/bin_table.service';
 import { ArchiveNotesTableService } from '../../services/archive_table.service';
 
 import { Spinner } from '../spinner/spinner';
@@ -20,27 +21,46 @@ const template: string = require("./home.html");
 @Component({
   selector: 'Home',
   template: template,
-  providers: [DragulaService, NotesTableService, ArchiveNotesTableService],
-  directives: [Dragula, FluidHeightDirective, Spinner, ROUTER_DIRECTIVES]
+  providers: [DragulaService, NotesTableService, ArchiveNotesTableService, BinNotesTableService, NotificationsService],
+  directives: [Dragula, FluidHeightDirective, Spinner, ROUTER_DIRECTIVES, SimpleNotificationsComponent]
 })
-export class Home implements AfterViewInit, OnInit{
+export class Home implements OnInit{
+  public order:any;
   public notes: any;
-  public orderNotes: any;
   public draft: any;
+  public orderNotes: any;
   public editNoteDraft: any;
+  public notificationOptions: any; 
   public spinner: boolean = true;
-  public displayList: boolean = false; 
-  inputFocusClass: boolean = false;
+  public displayList: boolean = false;
+  public inputFocusClass: boolean = false;
 
-  notes_table = NOTES_TABLE;
-  subscription:Subscription;
-  order:any;
-  constructor(private elementRef: ElementRef, private dragulaService: DragulaService, private _notesService: NotesTableService, private _archiveService: ArchiveNotesTableService) {
+  public notes_table = NOTES_TABLE;
+  public subscription:Subscription;
+  
+
+  constructor(
+      private dragulaService: DragulaService,
+      private _notesService: NotesTableService,
+      private _archiveService: ArchiveNotesTableService,
+      private _binService: BinNotesTableService,
+      private _notificationsService: NotificationsService
+    ) {
     this.notes = [];
     this.draft = {};
     this.editNoteDraft = {};
     this.order = [];
     this.orderNotes = [];
+    this.notificationOptions = {
+      timeOut: 3000,
+      lastOnBottom: true,
+      clickToClose: true,
+      showProgressBar: false,
+      pauseOnHover: true,
+      preventDuplicates: false,
+      theClass: "notes-notifications",
+      rtl: true
+    };
     dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value.slice(1));
     });
@@ -57,39 +77,6 @@ export class Home implements AfterViewInit, OnInit{
       notes_table => this.notes_table = notes_table
     );
     this.refreshNotesTables();
-  }
-
-  ngAfterViewInit() {
-    //  function setModalMaxHeight(element) {
-    //     this.$element     = $(element);  
-    //     this.$content     = this.$element.find('.modal-content');
-    //     var borderWidth   = this.$content.outerHeight() - this.$content.innerHeight();
-    //     var dialogMargin  = $(window).width() < 768 ? 20 : 60;
-    //     var contentHeight = $(window).height() - (dialogMargin + borderWidth);
-    //     var headerHeight  = this.$element.find('.modal-header').outerHeight() || 0;
-    //     var footerHeight  = this.$element.find('.modal-footer').outerHeight() || 0;
-    //     var maxHeight     = contentHeight - (headerHeight + footerHeight);
-
-    //     this.$content.css({
-    //         'overflow': 'hidden'
-    //     });
-    //     this.$element
-    //         .find('.modal-body').css({
-    //         'max-height': maxHeight,
-    //         'overflow-y': 'auto'
-    //     });
-    // }
-
-    // $('.modal').on('show.bs.modal', function() {
-    //     $(this).show();
-    //     setModalMaxHeight(this);
-    // });
-    
-    // $(window).resize(function() {
-    //     if ($('.modal.in').length != 0) {
-    //         setModalMaxHeight($('.modal.in'));
-    //     }
-    // });
   }
   
   _setInputFocus(isFocus:boolean) {
@@ -151,8 +138,9 @@ export class Home implements AfterViewInit, OnInit{
     if (_.trim(this.draft.title) || _.trim(this.draft.note)) {
       this.draft._id = 'note_' + Math.floor(Date.now() / 1000);
       this.draft.color = "label-default";
-      this.draft.time = _.now();
-
+      this.draft.time = new Date().toISOString();
+      this.draft.label = "";
+      this.draft.restore = "note";
       this._notesService.saveNote(this.draft)
         .then(res => {
           notetextarea.placeholder = "Write a note";
@@ -183,11 +171,20 @@ export class Home implements AfterViewInit, OnInit{
   deleteNote(note, noteRow) {
     noteRow.style.transition = "all 1s ease-in-out";
     noteRow.style.opacity = "0";
+    this._notificationsService.create("Done", "Note moved to Recycle Bin", "success");
     setTimeout(() => {
       this._notesService.deleteNote(note.doc)
         .then(res => {
           this.deleteFromOrder(note);
           this.refreshNotesTables();
+        }, err => {
+          console.log("Error", err);
+        });
+      let binNote = note.doc;
+      delete binNote._rev; 
+      this._binService.saveNote(binNote)
+        .then(res => {
+
         }, err => {
           console.log("Error", err);
         });
@@ -224,22 +221,26 @@ export class Home implements AfterViewInit, OnInit{
     this.editNoteDraft.note = note.doc.note;         
   }
 
-  makeArchive(note) {
-    this._notesService.deleteNote(note.doc)
-      .then(res => {
-        this.deleteFromOrder(note);
-        this.refreshNotesTables();
-      }, err => {
-        console.log("Error", err);
-      });
-    let archive_note = note;
-    delete archive_note.doc._rev;
-    this._archiveService.saveNote(archive_note.doc)
-      .then(res => {
-        this.updateArchiveOrder(archive_note.doc);
-      }, err => {
-        
-      });
+  makeArchive(note, noteRow) {
+    noteRow.style.transition = "all 1s ease-in-out";
+    noteRow.style.opacity = "0";
+    this._notificationsService.create("Done", "Note archived", "success");    
+    setTimeout(() => {
+      this._notesService.deleteNote(note.doc)
+        .then(res => {
+          this.deleteFromOrder(note);
+          this.refreshNotesTables();
+        }, err => {
+          console.log("Error", err);
+        });
+      let archive_note = note;
+      delete archive_note.doc._rev;
+      archive_note.doc.restore = "archive";
+      this._archiveService.saveNote(archive_note.doc)
+        .then(res => {
+          this.updateArchiveOrder(archive_note.doc);
+        }, err => {});
+    }, 300);
   }
   
   displayTypeChange() {

@@ -1,16 +1,15 @@
-import {Component, Directive, OnInit, ElementRef, AfterViewInit} from '@angular/core';
-import {Route, RouteConfig, ROUTER_DIRECTIVES} from '@angular/router-deprecated';
+import { Component, Directive, OnInit } from '@angular/core';
+import { Route, RouteConfig, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
 
-import {Subscription} from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
-import * as $ from 'jquery';
 
-import {Dragula} from '../../directives/dragula';
-import {DragulaService} from '../../providers/dragula';
-import { FluidHeightDirective } from '../../directives/fluid-height';
+import { Dragula } from '../../directives/dragula';
+import { DragulaService } from '../../providers/dragula';
 
 import { NotesTable } from '../../services/notes_table';
 import { NotesTableService } from '../../services/notes_table.service';
+import { BinNotesTableService } from '../../services/bin_table.service';
 import { ArchiveNotesTableService } from '../../services/archive_table.service';
 
 import { Spinner } from '../spinner/spinner';
@@ -20,10 +19,10 @@ const template: string = require("./archive.html");
 @Component({
   selector: 'archive',
   template: template,
-  providers: [DragulaService, ArchiveNotesTableService, NotesTableService],
-  directives: [Dragula, FluidHeightDirective, Spinner, ROUTER_DIRECTIVES]
+  providers: [DragulaService, ArchiveNotesTableService, NotesTableService, BinNotesTableService],
+  directives: [Dragula, Spinner, ROUTER_DIRECTIVES]
 })
-export class Archive{
+export class Archive {
 public notes: any;
   public orderNotes: any;
   public editNoteDraft: any;
@@ -33,7 +32,8 @@ public notes: any;
   notes_table = NOTES_TABLE;
   subscription:Subscription;
   order:any;
-  constructor(private elementRef: ElementRef, private dragulaService: DragulaService, private _notesService: NotesTableService, private _archiveNotesService: ArchiveNotesTableService) {
+
+  constructor(private dragulaService: DragulaService, private _notesService: NotesTableService, private _archiveNotesService: ArchiveNotesTableService, private _binNotesService: BinNotesTableService) {
     this.notes = [];
     this.editNoteDraft = {};
     this.order = [];
@@ -55,13 +55,9 @@ public notes: any;
     );
     this.refreshNotesTables();
   }
-
-  ngAfterViewInit() {
-  }
   
   private onDropModel(args) {
     let [el, target, source] = args;
-    // do something else
     
     let order = []; 
     this.notes.forEach(row => {
@@ -73,7 +69,6 @@ public notes: any;
 
   private onRemoveModel(args) {
     let [el, source] = args;
-    // do something else
   }
   
   
@@ -121,6 +116,14 @@ public notes: any;
         }, err => {
           console.log("Error", err);
         });
+      let binNote = note.doc;
+      delete binNote._rev;
+      this._binNotesService.saveNote(binNote)
+        .then(res => {
+
+        }, err => {
+          console.log("Error", err);
+        });
     }, 300);
   }
   
@@ -154,8 +157,11 @@ public notes: any;
     this.editNoteDraft.note = note.doc.note;         
   }
 
-  unArchive(note) {
-      this._archiveNotesService.deleteNote(note)
+  unArchive(note, noteRow) {
+    noteRow.style.transition = "all 1s ease-in-out";
+    noteRow.style.opacity = "0";
+    setTimeout(() => {
+      this._archiveNotesService.deleteNote(note.doc)
         .then(res => {      
           this.deleteFromOrder(note);    
           this.refreshNotesTables();
@@ -164,13 +170,13 @@ public notes: any;
         });
       let archive_note = note;
       delete archive_note.doc._rev;
-      this._archiveNotesService.saveNote(archive_note.doc)
+      archive_note.doc.restore = "note";
+      this._notesService.saveNote(archive_note.doc)
         .then(res => {
           this.updateNotesOrder(archive_note.doc);
-        }, err => {
-          
-        });
-    }
+        }, err => {});
+    }, 300);
+  }
   
   displayTypeChange() {
     this.displayList = this.displayList ? false : true;

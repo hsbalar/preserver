@@ -37,13 +37,16 @@
   font-size: 17px;
   height: auto;
   overflow-y: auto;
-  resize: none!important;
-  min-height: 650px !important;
+  resize: none !important;
  }
- 
- .modal-content .modal-body {
-    padding: 0px 0px 5px 14px!important;
- }
+
+.edit-saved .modal-header {
+  padding-left: 14px !important;  
+} 
+
+.modal-content .modal-body {
+  padding: 0px 0px 5px 14px!important;
+}
 
 // *, *:before, *:after {
 //   box-sizing: border-box !important;
@@ -59,4 +62,43 @@
 .grid-item {
   display: inline-block;
   width: 100%;
+}
+
+.notes-notifications {
+  background: rgb(50, 50, 50) !important;
+  direction: ltr !important;
+  transition: all 1s ease-in !important;
+}
+
+.notes-notifications .title {
+  padding: 0px 0px 0px 50px !important;
+}
+
+.simple-notification-wrapper {
+  right: 0px !important;
+  left: 20px !important;
+}
+
+@media screen and ( min-height: 900px ){
+  .edit-saved-textera {
+    min-height: 750px !important;    
+  }
+}
+
+@media screen and ( min-height: 700px ){
+  .edit-saved-textera {
+    min-height: 600px !important;    
+  }
+}
+
+@media screen and ( min-height: 500px ){
+  .edit-saved-textera {
+    min-height: 500px !important;    
+  }
+}
+
+@media screen and ( min-height: 400px ){
+  .edit-saved-textera {
+    min-height: 400px !important;    
+  }
 }
