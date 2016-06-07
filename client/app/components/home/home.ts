@@ -37,8 +37,8 @@ export class Home implements OnInit{
 
   public notes_table = NOTES_TABLE;
   public subscription:Subscription;
+  public emptyHtmlMsg: boolean = false;
   
-
   constructor(
       private dragulaService: DragulaService,
       private _notesService: NotesTableService,
@@ -126,6 +126,11 @@ export class Home implements OnInit{
             }
           });
         });
+        if (_.isEmpty(this.notes)) {
+          this.emptyHtmlMsg = true;
+        } else {
+          this.emptyHtmlMsg = false;          
+        }
         this.spinner = false;
       },
       err => {
@@ -171,10 +176,10 @@ export class Home implements OnInit{
   deleteNote(note, noteRow) {
     noteRow.style.transition = "all 1s ease-in-out";
     noteRow.style.opacity = "0";
-    this._notificationsService.create("Done", "Note moved to Recycle Bin", "success");
     setTimeout(() => {
       this._notesService.deleteNote(note.doc)
         .then(res => {
+          this._notificationsService.create("Done", "Note moved to Recycle Bin", "success");
           this.deleteFromOrder(note);
           this.refreshNotesTables();
         }, err => {
@@ -224,10 +229,10 @@ export class Home implements OnInit{
   makeArchive(note, noteRow) {
     noteRow.style.transition = "all 1s ease-in-out";
     noteRow.style.opacity = "0";
-    this._notificationsService.create("Done", "Note archived", "success");    
     setTimeout(() => {
       this._notesService.deleteNote(note.doc)
         .then(res => {
+          this._notificationsService.create("Done", "Note archived", "success");    
           this.deleteFromOrder(note);
           this.refreshNotesTables();
         }, err => {

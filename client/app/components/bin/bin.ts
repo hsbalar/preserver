@@ -1,5 +1,6 @@
 import { Component, Directive, OnInit } from '@angular/core';
 import { Route, RouteConfig, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
+import { NotificationsService, SimpleNotificationsComponent} from "angular2-notifications";
 
 import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
@@ -20,24 +21,41 @@ const template: string = require("./bin.html");
 @Component({
   selector: 'bin',
   template: template,
-  providers: [BinNotesTableService, ArchiveNotesTableService, NotesTableService],
-  directives: [Spinner, ROUTER_DIRECTIVES]
+  providers: [BinNotesTableService, ArchiveNotesTableService, NotesTableService, NotificationsService],
+  directives: [Spinner, ROUTER_DIRECTIVES, SimpleNotificationsComponent]
 })
 export class Bin {
   public notes: any;
   public orderNotes: any;
   public editNoteDraft: any;
+  public notificationOptions: any; 
   public spinner: boolean = true;
   public displayList: boolean = false; 
   public toDeleteNote: any;
 
-  notes_table = NOTES_TABLE;
-  subscription:Subscription;
-  order:any;
-
-  constructor(private _notesService: NotesTableService, private _archiveNotesService: ArchiveNotesTableService, private _binNotesService: BinNotesTableService) {
+  public notes_table = NOTES_TABLE;
+  public subscription:Subscription;
+  public order:any;
+  public emptyHtmlMsg: boolean = false;
+  constructor(
+      private _notesService: NotesTableService,
+      private _archiveNotesService: ArchiveNotesTableService,
+      private _binNotesService: BinNotesTableService,
+      private _notificationsService: NotificationsService
+    ) {
     this.notes = [];
     this.toDeleteNote = {};
+    this.notificationOptions = {
+      timeOut: 3000,
+      lastOnBottom: true,
+      clickToClose: true,
+      showProgressBar: false,
+      pauseOnHover: true,
+      preventDuplicates: false,
+      theClass: "notes-notifications",
+      rtl: true
+    };
+    
   }
   
   ngOnInit() {
@@ -52,6 +70,11 @@ export class Bin {
       alldoc => {
         this.notes_table = alldoc.rows;
         this.notes = this.notes_table;
+        if (_.isEmpty(this.notes)) {
+          this.emptyHtmlMsg = true;
+        } else {
+          this.emptyHtmlMsg = false;          
+        }
         this.spinner = false;
       },
       err => {
@@ -84,6 +107,7 @@ export class Bin {
     setTimeout(() => {
       this._binNotesService.deleteNote(note.doc)
         .then(res => {      
+          this._notificationsService.create("Done", "Note restored", "success");
           this.refreshNotesTables();
         }, err => {
           console.log("Error", err);

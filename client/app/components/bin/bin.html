@@ -105,4 +105,9 @@
       </div>
     </div>
   </div>
+  <simple-notifications [options]="notificationOptions"></simple-notifications>
+  <div class="container empty-notes-container" *ngIf="emptyHtmlMsg">
+    <div class="empty-notes-icon empty-bin"></div>
+    <div class="empty-notes">No notes in Recycle Bin</div>
+  </div>
 </div>
