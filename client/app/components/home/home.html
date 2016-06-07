@@ -9,8 +9,14 @@
 
               <li class="dropdown-header">Preferences</li>
               <li><a [routerLink]="['/Home']">My Notes</a></li>
-              <li><a [routerLink]="['/Archive']">Archive Notes</a></li>            
+              <li><a [routerLink]="['/Archive']">Archive Notes</a></li>   
+              <li><a href="javascript:void(0)" [routerLink]="['/Bin']">Recycle Bin</a></li>                       
               <li role="separator" class="divider"></li>
+              <li>
+                <a href="javascript:void(0)" (click)="displayTypeChange()">
+                  {{displayList ? 'Grid View' : 'List View'}}
+                </a>
+              </li>
               <li><a href="javascript:void(0)">Settings</a></li>
             </ul>
           </li>
@@ -32,6 +38,7 @@
               <li class="dropdown-header">Preferences</li>
               <li><a href="javascript:void(0)" [routerLink]="['/Home']">My Notes</a></li>
               <li><a href="javascript:void(0)" [routerLink]="['/Archive']">Archive Notes</a></li>
+              <li><a href="javascript:void(0)" [routerLink]="['/Bin']">Recycle Bin</a></li>              
               <li class="divider"></li>
               <li><a href="javascript:void(0)">Settings</a></li>
             </ul>
@@ -67,7 +74,7 @@
       <div class="{{ 'panel-footer ' + text.doc.color}}">
         <ul class="note-footer">
           <li><a href="javascript:void(0)" class="btn btn-link btn-raised"
-             title="Archive" (click)="makeArchive(text)">
+             title="Archive" (click)="makeArchive(text, noteRow)">
             <i class="fa fa-download"></i>        
           </a></li>
           <li class="dropup">
@@ -113,4 +120,5 @@
       </div>
     </div>
   </div>
+  <simple-notifications [options]="notificationOptions"></simple-notifications>
 </div>

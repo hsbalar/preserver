@@ -5,4 +5,5 @@ export class NotesTable {
   label: string;
   color: string;
   time: string;
+  restore: string;
 }

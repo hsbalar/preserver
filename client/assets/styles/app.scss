@@ -53,15 +53,16 @@
   resize: none;
   background-image: linear-gradient(#009688,#009688),linear-gradient(rgba(255,255,255,.84),rgba(255,255,255,.84))!important;
 }
-  .panel-footer {
-    opacity: 0;
-     -webkit-transition-duration:.218s;
-    transition-duration: .218s;
-    -webkit-transition-property: opacity;
-    transition-property: opacity;
-    -webkit-transition-timing-function: ease-in;
-    transition-timing-function: ease-in;
-  }
+
+.panel-footer {
+  opacity: 0;
+    -webkit-transition-duration:.218s;
+  transition-duration: .218s;
+  -webkit-transition-property: opacity;
+  transition-property: opacity;
+  -webkit-transition-timing-function: ease-in;
+  transition-timing-function: ease-in;
+}
 
 .panel:hover {
  .panel-footer {

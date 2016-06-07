@@ -5,6 +5,7 @@ import {RouteActive} from './directives/route-active';
 
 import {Home} from './components/home/home';
 import {Archive} from './components/archive-notes/archive';
+import {Bin} from './components/bin/bin';
 
 const template: string = require("./notes-app.html");
 
@@ -17,11 +18,11 @@ const template: string = require("./notes-app.html");
 })
 @RouteConfig([
   new Route({ path: '/home', component: Home, name: 'Home', useAsDefault: true }),
-  new Route({ path: '/archive', component: Archive, name: 'Archive' })
+  new Route({ path: '/archive', component: Archive, name: 'Archive' }),
+  new Route({ path: '/bin', component: Bin, name: 'Bin' })  
 ])
 export class NotesApp {
 
-  constructor() {
+  constructor() { }
 
-  }
 }
