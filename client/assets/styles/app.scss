@@ -56,7 +56,7 @@
 
 .panel-footer {
   opacity: 0;
-    -webkit-transition-duration:.218s;
+  -webkit-transition-duration:.218s;
   transition-duration: .218s;
   -webkit-transition-property: opacity;
   transition-property: opacity;
@@ -226,9 +226,4 @@
 		border-top-left-radius: 0em;
 		border-top-right-radius: 0em;
 	}
-}
-
-.masonry-container {
-  transition: all 0.5s;
-  -webkit-transition: all 0.5s;
 }

@@ -1,5 +1,6 @@
 import { Component, Directive, OnInit } from '@angular/core';
 import { Route, RouteConfig, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
+import { NotificationsService, SimpleNotificationsComponent} from "angular2-notifications";
 
 import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
@@ -19,25 +20,44 @@ const template: string = require("./archive.html");
 @Component({
   selector: 'archive',
   template: template,
-  providers: [DragulaService, ArchiveNotesTableService, NotesTableService, BinNotesTableService],
-  directives: [Dragula, Spinner, ROUTER_DIRECTIVES]
+  providers: [DragulaService, ArchiveNotesTableService, NotesTableService, BinNotesTableService, NotificationsService],
+  directives: [Dragula, Spinner, ROUTER_DIRECTIVES, SimpleNotificationsComponent]
 })
 export class Archive {
 public notes: any;
+  public order:any;
   public orderNotes: any;
   public editNoteDraft: any;
+  public notificationOptions: any; 
   public spinner: boolean = true;
   public displayList: boolean = false; 
+  public emptyHtmlMsg: boolean = false;
 
-  notes_table = NOTES_TABLE;
-  subscription:Subscription;
-  order:any;
+  public notes_table = NOTES_TABLE;
+  public subscription:Subscription;
 
-  constructor(private dragulaService: DragulaService, private _notesService: NotesTableService, private _archiveNotesService: ArchiveNotesTableService, private _binNotesService: BinNotesTableService) {
+  constructor (
+      private dragulaService: DragulaService,
+      private _notesService: NotesTableService,
+      private _archiveNotesService: ArchiveNotesTableService,
+      private _binNotesService: BinNotesTableService,
+      private _notificationsService: NotificationsService
+    ) {
     this.notes = [];
     this.editNoteDraft = {};
     this.order = [];
     this.orderNotes = [];
+    this.notificationOptions = {
+      timeOut: 3000,
+      lastOnBottom: true,
+      clickToClose: true,
+      showProgressBar: false,
+      pauseOnHover: true,
+      preventDuplicates: false,
+      theClass: "notes-notifications",
+      rtl: true
+    };
+
     dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value.slice(1));
     });
@@ -97,6 +117,11 @@ public notes: any;
             }
           });
         });
+        if (_.isEmpty(this.notes)) {
+          this.emptyHtmlMsg = true;
+        } else {
+          this.emptyHtmlMsg = false;          
+        }
         this.spinner = false;
       },
       err => {
@@ -111,6 +136,7 @@ public notes: any;
     setTimeout(() => {
       this._archiveNotesService.deleteNote(note.doc)
         .then(res => {
+          this._notificationsService.create("Done", "Note moved to Recycle Bin", "success");
           this.deleteFromOrder(note);
           this.refreshNotesTables();
         }, err => {
@@ -162,7 +188,8 @@ public notes: any;
     noteRow.style.opacity = "0";
     setTimeout(() => {
       this._archiveNotesService.deleteNote(note.doc)
-        .then(res => {      
+        .then(res => {
+          this._notificationsService.create("Done", "Note unarchived", "success");      
           this.deleteFromOrder(note);    
           this.refreshNotesTables();
         }, err => {

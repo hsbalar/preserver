@@ -121,4 +121,8 @@
     </div>
   </div>
   <simple-notifications [options]="notificationOptions"></simple-notifications>
+  <div class="container empty-notes-container" *ngIf="emptyHtmlMsg">
+    <h3 class="empty-notes-icon empty-notes-main"><i class="fa fa-file-text-o fa-5x"></i></h3>
+    <div class="empty-notes">Notes that you add appear here</div>
+  </div>
 </div>
