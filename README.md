@@ -1,6 +1,17 @@
-# Preserver
+<h1 align="center">
+  <br>
+  <a href="http://www.hiteshbalar.com/preserver"><img src="https://raw.githubusercontent.com/hsbalar/Preserver/dev/public/logo.png" alt="Markdownify" width="208"></a>
+  <br>
+  Preserver
+  <br>
+</h1>
 
-Basic useful feature of Preserver application:
+<h4 align="center">Preserver is an notes organizer desktop app based on <a href="http://electron.atom.io" target="_blank">Electron</a>.</h4>
+<h5 align="center">Organize your life with one of these incredibly useful Desktop applications for keeping track of notes, tasks, and to-do lists.</h5>
+
+<br>
+
+### Basic useful feature of Preserver application:
 
  * Create notes
  * Archive notes
@@ -11,9 +22,13 @@ Basic useful feature of Preserver application:
  * Set color to Notes as per your priority
 
 
-Next, Run an electron application what you have to do is !
+### Next, To Run an electron application what you have to do is !
 
- * npm install
- * node start-electron.js
- * That's it ...
-
+ `npm install`
+ 
+ `npm run build`
+ 
+ `node start`
+ 
+ #### That's it ...
+ 
