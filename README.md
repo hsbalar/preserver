@@ -26,6 +26,8 @@
 
  `npm install`
  
+ `typings install` (Before that `npm install typings -g`)
+ 
  `npm run build`
  
  `node start`
