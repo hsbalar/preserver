@@ -13,24 +13,39 @@
 
 ### Basic useful feature of Preserver application:
 
- * Create notes
- * Archive notes
- * Move notes to trash & restore back
- * Assign lables to notes
- * Create todo list
- * Upload images to note
- * Set color to Notes as per your priority
+ * **Create notes**
+ * **Archive notes**
+ * **Move notes to trash & restore back**
+ * **Assign lables to notes**
+ * **Create todo list**
+ * **Upload images to note**
+ * **Set color to Notes as per your priority**
 
 
 ### Next, To Run an electron application what you have to do is !
 
- `npm install`
- 
- `typings install` (Before that `npm install typings -g`)
- 
- `npm run build`
- 
- `node start`
+>  `npm install`
+>  
+>  `typings install` (Before that `npm install typings -g`)
+>  
+>  `npm run build`
+>  
+>  `node start`
  
 #### That's it ...
- 
+
+## Library stack used
+
+- [Electron](http://electron.atom.io/)
+- [Node.js](https://nodejs.org/)
+- [PouchDB](https://pouchdb.com/)
+- [Angular.io](https://angular.io/)
+- [Dragula](http://valor-software.com/ng2-dragula/)
+
+## Download
+
+You can [download](https://github.com/hsbalar/Preserver/releases/tag/v1.0.0) Preserver application for Windows, Darwin and Linux.
+
+#### License
+
+MIT********
