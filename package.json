@@ -4,7 +4,9 @@
   "main": "main.js",
   "description": "Notes Manager",
   "scripts": {
-    "start": "npm run start:webpack & npm run start:nodemon",
+    "start": "node start-electron.js",
+    "dev": "npm run start:webpack & npm run start:nodemon",
+    "build": "npm run start:webpack",
     "start:webpack": "webpack -w",
     "start:nodemon": "nodemon --watch server/ --watch config.js --ignore server/views/ bin/www",
     "clean": "rimraf ./dist"
