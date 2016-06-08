@@ -20,7 +20,8 @@ app.on('ready', function() {
       nodeIntegration: false
     },
   	width: 1200,
-		height: 750
+		height: 750,
+    icon: __dirname + '/resources/app/public/logo.ico'
   });
 
   require("./server").start()
