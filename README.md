@@ -9,7 +9,9 @@
 <h4 align="center">Preserver is an notes organizer desktop app based on <a href="http://electron.atom.io" target="_blank">Electron</a>.</h4>
 <h5 align="center">Organize your life with one of these incredibly useful Desktop applications for keeping track of notes, tasks, and to-do lists.</h5>
 
+![screenshot](https://raw.githubusercontent.com/hsbalar/Preserver/master/public/screen1.png)
 <br>
+![screenshot](https://raw.githubusercontent.com/hsbalar/Preserver/master/public/screen2.png)
 
 ### Basic useful feature of Preserver application:
 
