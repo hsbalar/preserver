@@ -1,6 +1,7 @@
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
+const tray = require('./tray');
 
 // register babel hook
 require("babel-register")();
@@ -28,10 +29,12 @@ app.on('ready', function() {
   .then((app) => {
      mainWindow.loadURL('http://localhost:3000');
   }).catch((err) => {
-  
-  });
 
-  mainWindow.openDevTools();
+  });
+  
+  tray.create(mainWindow);
+
+  // mainWindow.openDevTools();
   mainWindow.on('closed', function() {
     mainWindow = null;
   });

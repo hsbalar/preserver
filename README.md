@@ -50,4 +50,4 @@ You can [download](https://github.com/hsbalar/Preserver/releases/tag/v1.0.0) Pre
 
 #### License
 
-MIT********
+MIT

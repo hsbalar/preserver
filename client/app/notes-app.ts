@@ -17,9 +17,9 @@ const template: string = require("./notes-app.html");
   pipes: []
 })
 @RouteConfig([
-  new Route({ path: '/home', component: Home, name: 'Home', useAsDefault: true }),
-  new Route({ path: '/archive', component: Archive, name: 'Archive' }),
-  new Route({ path: '/bin', component: Bin, name: 'Bin' })  
+  new Route({ path: '/notes', component: Home, name: 'Home', useAsDefault: true }),
+  new Route({ path: '/archive-notes', component: Archive, name: 'Archive' }),
+  new Route({ path: '/recycle-bin', component: Bin, name: 'Bin' })  
 ])
 export class NotesApp {
 
