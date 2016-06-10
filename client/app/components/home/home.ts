@@ -39,7 +39,7 @@ export class Home implements OnInit{
   public subscription:Subscription;
   public emptyHtmlMsg: boolean = false;
   
-  constructor(
+  constructor (
       private dragulaService: DragulaService,
       private _notesService: NotesTableService,
       private _archiveService: ArchiveNotesTableService,
@@ -61,6 +61,9 @@ export class Home implements OnInit{
       theClass: "notes-notifications",
       rtl: true
     };
+    dragulaService.drag.subscribe((value) => {
+      this.onDrag(value.slice(1));
+    });
     dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value.slice(1));
     });
@@ -70,8 +73,17 @@ export class Home implements OnInit{
     dragulaService.removeModel.subscribe((value) => {
       this.onRemoveModel(value.slice(1));
     });
+    
+    // if (localStorage.getItem("displayList")) {
+    //   localStorage.setItem("order", JSON.stringify());
+    // }
   }
   
+  
+  private onDrag(args) {
+    let [e, el] = args;
+  }
+
   ngOnInit() {
     this.subscription = this._notesService.notes_tables$.subscribe(
       notes_table => this.notes_table = notes_table
@@ -92,7 +104,6 @@ export class Home implements OnInit{
       order.push(row.doc._id);
     });
 
-    console.log(order)
     localStorage.setItem("order", JSON.stringify(order));
   }
 
@@ -174,8 +185,7 @@ export class Home implements OnInit{
   }
   
   deleteNote(note, noteRow) {
-    noteRow.style.transition = "all 1s ease-in-out";
-    noteRow.style.opacity = "0";
+    noteRow.className += " animated zoomOut";
     setTimeout(() => {
       this._notesService.deleteNote(note.doc)
         .then(res => {
@@ -193,7 +203,7 @@ export class Home implements OnInit{
         }, err => {
           console.log("Error", err);
         });
-    }, 300);
+    }, 100);
   }
   
   setNoteColor(color, note) {
@@ -227,8 +237,7 @@ export class Home implements OnInit{
   }
 
   makeArchive(note, noteRow) {
-    noteRow.style.transition = "all 1s ease-in-out";
-    noteRow.style.opacity = "0";
+    noteRow.className += " animated flipOutY";
     setTimeout(() => {
       this._notesService.deleteNote(note.doc)
         .then(res => {
@@ -245,7 +254,7 @@ export class Home implements OnInit{
         .then(res => {
           this.updateArchiveOrder(archive_note.doc);
         }, err => {});
-    }, 300);
+    }, 100);
   }
   
   displayTypeChange() {

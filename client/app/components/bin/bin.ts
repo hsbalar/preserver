@@ -32,6 +32,7 @@ export class Bin {
   public spinner: boolean = true;
   public displayList: boolean = false; 
   public toDeleteNote: any;
+  public toDeleteNoteRow: any;
 
   public notes_table = NOTES_TABLE;
   public subscription:Subscription;
@@ -85,6 +86,7 @@ export class Bin {
     
   deleteNote() {
     if (this.toDeleteNote) {
+      this.toDeleteNoteRow.className += " animated zoomOut";
       setTimeout(() => {
         this._binNotesService.deleteNote(this.toDeleteNote.doc)
           .then(res => {
@@ -97,13 +99,13 @@ export class Bin {
     }
   }
   
-  setDeleteNote(note) {
+  setDeleteNote(note, noteRow) {
     this.toDeleteNote = note;
+    this.toDeleteNoteRow = noteRow;
   }
   
   restoreNote(note, noteRow) {
-    noteRow.style.transition = "all 1s ease-in-out";
-    noteRow.style.opacity = "0";
+    noteRow.className += " animated flipOutY";
     setTimeout(() => {
       this._binNotesService.deleteNote(note.doc)
         .then(res => {      
@@ -125,7 +127,7 @@ export class Bin {
             this.updateNotesOrder(restore_note.doc);
           }, err => {});
       }
-    }, 200);
+    }, 300);
   }
   
   displayTypeChange() {
