@@ -131,8 +131,7 @@ public notes: any;
   }
     
   deleteNote(note, noteRow) {
-    noteRow.style.transition = "all 1s ease-in-out";
-    noteRow.style.opacity = "0";
+    noteRow.className += " animated zoomOut";
     setTimeout(() => {
       this._archiveNotesService.deleteNote(note.doc)
         .then(res => {
@@ -150,7 +149,7 @@ public notes: any;
         }, err => {
           console.log("Error", err);
         });
-    }, 300);
+    }, 100);
   }
   
   setNoteColor(color, note) {
@@ -184,8 +183,7 @@ public notes: any;
   }
 
   unArchive(note, noteRow) {
-    noteRow.style.transition = "all 1s ease-in-out";
-    noteRow.style.opacity = "0";
+    noteRow.className += " animated flipOutY";
     setTimeout(() => {
       this._archiveNotesService.deleteNote(note.doc)
         .then(res => {

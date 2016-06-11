@@ -49,19 +49,17 @@
     </div>
   </div>
   <spinner *ngIf="spinner"></spinner>
-  <div class="{{ displayList ? 'container note' : 'container note grid-container'}}">
+  <div class="{{ displayList ? 'container note animated zoomInUp' : 'container note grid-container animated zoomInUp'}}">
     <div *ngFor='let text of notes' class="{{ displayList ? 'panel panel-default ' + text.doc.color : 'panel panel-default grid-item ' + text.doc.color}}" #noteRow [attr.id]="text.doc._id">
-      <div data-toggle="modal" [attr.data-target]="'#note' + text.doc._id">
-        <div class="panel-body my-note module line-clamp">
-          <p><strong>{{text.doc?.title}}</strong></p>
-          <p> {{text.doc?.note}} </p>
-        </div>
+      <div class="panel-body my-note module line-clamp">
+        <p><strong>{{text.doc?.title}}</strong></p>
+        <p> {{text.doc?.note}} </p>
       </div>
       <div class="{{ 'panel-footer ' + text.doc.color}}">
         <ul class="note-footer">
           <li class="dropup">
             <a class="btn btn-link btn-raised"
-              title="Delete forever" data-target="#deleteNote" data-toggle="modal" (click)="setDeleteNote(text)">
+              title="Delete forever" data-target="#deleteNote" data-toggle="modal" (click)="setDeleteNote(text, noteRow)">
               <i class="fa fa-trash"></i>
             </a>
           </li>
