@@ -1,16 +1,14 @@
-import { Component, Directive, OnInit } from '@angular/core';
-import { Route, RouteConfig, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
-import { NotificationsService, SimpleNotificationsComponent} from "angular2-notifications";
+import {Component, Directive, OnInit} from '@angular/core';
 
-import { Subscription } from 'rxjs/Subscription';
+import {Subscription} from 'rxjs/Subscription';
 import * as _ from 'lodash';
 
-import { Dragula } from '../../directives/dragula';
-import { DragulaService } from '../../providers/dragula';
+import {Dragula} from '../../directives/dragula';
+import {DragulaService} from '../../providers/dragula';
+import { FluidHeightDirective } from '../../directives/fluid-height';
 
 import { NotesTable } from '../../services/notes_table';
 import { NotesTableService } from '../../services/notes_table.service';
-import { BinNotesTableService } from '../../services/bin_table.service';
 import { ArchiveNotesTableService } from '../../services/archive_table.service';
 
 import { Spinner } from '../spinner/spinner';
@@ -20,49 +18,26 @@ const template: string = require("./archive.html");
 @Component({
   selector: 'archive',
   template: template,
-  providers: [DragulaService, ArchiveNotesTableService, NotesTableService, BinNotesTableService, NotificationsService],
-  directives: [Dragula, Spinner, ROUTER_DIRECTIVES, SimpleNotificationsComponent]
+  providers: [DragulaService, ArchiveNotesTableService, NotesTableService],
+  directives: [Dragula, FluidHeightDirective, Spinner]
 })
-export class Archive {
-public notes: any;
-  public order:any;
-  public orderNotes: any;
-  public editNoteDraft: any;
-  public notificationOptions: any; 
+export class Archive{
+  public notes: any;
+  public draft: any;
   public spinner: boolean = true;
-  public displayList: boolean = false; 
-  public emptyHtmlMsg: boolean = false;
+  inputFocusClass: boolean = false;
 
-  public notes_table = NOTES_TABLE;
-  public subscription:Subscription;
-
-  constructor (
-      private dragulaService: DragulaService,
-      private _notesService: NotesTableService,
-      private _archiveNotesService: ArchiveNotesTableService,
-      private _binNotesService: BinNotesTableService,
-      private _notificationsService: NotificationsService
-    ) {
+  notes_table = NOTES_TABLE;
+  subscription:Subscription;
+  
+  constructor(private dragulaService: DragulaService, private _notesService: NotesTableService, private _archiveNotesService: ArchiveNotesTableService) {
     this.notes = [];
-    this.editNoteDraft = {};
-    this.order = [];
-    this.orderNotes = [];
-    this.notificationOptions = {
-      timeOut: 3000,
-      lastOnBottom: true,
-      clickToClose: true,
-      showProgressBar: false,
-      pauseOnHover: true,
-      preventDuplicates: false,
-      theClass: "notes-notifications",
-      rtl: true
-    };
-
+    this.draft = {};
     dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value.slice(1));
     });
     dragulaService.drop.subscribe((value) => {
-      this.onDrop(value);
+      this.onDrop(value.slice(1));
     });
     dragulaService.removeModel.subscribe((value) => {
       this.onRemoveModel(value.slice(1));
@@ -75,20 +50,19 @@ public notes: any;
     );
     this.refreshNotesTables();
   }
+
+  _setInputFocus(isFocus:boolean) {
+    this.inputFocusClass = isFocus;
+  }
   
   private onDropModel(args) {
     let [el, target, source] = args;
-    
-    let order = []; 
-    this.notes.forEach(row => {
-      order.push(row.doc._id);
-    });
-
-    localStorage.setItem('archiveOrder', JSON.stringify(order));
+    // do something else
   }
 
   private onRemoveModel(args) {
     let [el, source] = args;
+    // do something else
   }
   
   
@@ -104,130 +78,67 @@ public notes: any;
     this._archiveNotesService.getNotes().then(
       alldoc => {
         this.notes_table = alldoc.rows;
-        let testNotes = [];
-        testNotes = this.notes_table;
-        if (localStorage.getItem('archiveOrder')) {
-          this.order = JSON.parse(localStorage.getItem('archiveOrder'));
-        }
-        this.notes = [];
-        this.order.forEach(el => {
-          testNotes.forEach(row => {
-            if (String(row.doc._id) === String(el)) {
-              this.notes.push(row);
-            }
-          });
-        });
-        if (_.isEmpty(this.notes)) {
-          this.emptyHtmlMsg = true;
-        } else {
-          this.emptyHtmlMsg = false;          
-        }
-        this.spinner = false;
+        this.notes = this.notes_table;
+        this.spinner = false;   
       },
       err => {
         this.spinner = false;        
       }
     );
   }
-    
-  deleteNote(note, noteRow) {
-    noteRow.className += " animated zoomOut";
-    setTimeout(() => {
-      this._archiveNotesService.deleteNote(note.doc)
-        .then(res => {
-          this._notificationsService.create("Done", "Note moved to Recycle Bin", "success");
-          this.deleteFromOrder(note);
-          this.refreshNotesTables();
-        }, err => {
-          console.log("Error", err);
-        });
-      let binNote = note.doc;
-      delete binNote._rev;
-      this._binNotesService.saveNote(binNote)
-        .then(res => {
-
-        }, err => {
-          console.log("Error", err);
-        });
-    }, 100);
-  }
   
-  setNoteColor(color, note) {
-    if (note.doc.color != color) {
-      note.doc.color = color;    
-      this._archiveNotesService.updateNote(note.doc)
-        .then(res => {          
+  saveNote(e) {
+    if (_.trim(this.draft.title) || _.trim(this.draft.note)) {
+      this.draft._id = 'note_' + Math.floor(Date.now() / 1000);
+      this.draft.color = "label-info";
+      this._archiveNotesService.saveNote(this.draft)
+        .then(res => {
+          this.draft = {};
+          this.inputFocusClass = false;         
           this.refreshNotesTables();
         }, err => {
           console.log("Error", err);
         });
+    } else {
+      this.inputFocusClass = false;
     }
   }
   
-  updateModalNote(note) {
-    note.doc.note = this.editNoteDraft.note;
-    note.doc.title = this.editNoteDraft.title;
-    this._archiveNotesService.updateNote(note.doc)
-      .then(res => {
-        this.editNoteDraft = {};
+  deleteNote(note) {
+    this._archiveNotesService.deleteNote(note)
+      .then(res => {          
         this.refreshNotesTables();
       }, err => {
-        this.editNoteDraft = {};        
         console.log("Error", err);
       });
   }
   
-  editModalNoteClick(note) {
-    this.editNoteDraft.title = note.doc.title;
-    this.editNoteDraft.note = note.doc.note;         
-  }
-
-  unArchive(note, noteRow) {
-    noteRow.className += " animated flipOutY";
-    setTimeout(() => {
-      this._archiveNotesService.deleteNote(note.doc)
-        .then(res => {
-          this._notificationsService.create("Done", "Note unarchived", "success");      
-          this.deleteFromOrder(note);    
-          this.refreshNotesTables();
-        }, err => {
-          console.log("Error", err);
-        });
-      let archive_note = note;
-      delete archive_note.doc._rev;
-      archive_note.doc.restore = "note";
-      this._notesService.saveNote(archive_note.doc)
-        .then(res => {
-          this.updateNotesOrder(archive_note.doc);
-        }, err => {});
-    }, 300);
+  setNoteColor(color, note) {
+    this._archiveNotesService.setNoteColor(color, note)
+      .then(res => {          
+        console.log(res);
+        this.refreshNotesTables();
+      }, err => {
+        console.log("Error", err);
+      });
   }
   
-  displayTypeChange() {
-    this.displayList = this.displayList ? false : true;
-  }
-  
-  deleteFromOrder(note) {
-    let index = this.order.indexOf(this.order.filter(row => {
-      return String(row) === String(note.doc._id);
-    })[0]);
-    if (index !== -1) {
-      this.order.splice(index, 1);
-      localStorage.setItem('archiveOrder', JSON.stringify(this.order));
-    }
-  }
-  
-  updateNotesOrder(draft) {
-    let newOrder = [];
-    if (localStorage.getItem('order')) {
-      newOrder = JSON.parse(localStorage.getItem('order'));
-      newOrder.unshift(draft._id);
-    } else {
-      newOrder.push(draft._id);
-    }
-    localStorage.setItem("order", JSON.stringify(newOrder));
+   unArchive(note) {
+    this._archiveNotesService.deleteNote(note)
+      .then(res => {          
+        this.refreshNotesTables();
+      }, err => {
+        console.log("Error", err);
+      });
+    let archive_note = note;
+    delete archive_note.doc._rev;
+    this._notesService.saveNote(archive_note.doc)
+      .then(res => {
+        
+      }, err => {
+        
+      });
   }
 }
 
 let NOTES_TABLE: NotesTable[] = []
-
