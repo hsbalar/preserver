@@ -2,6 +2,7 @@ const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const tray = require('./tray');
+let isQuitting = false;
 
 // register babel hook
 require("babel-register")();
@@ -31,11 +32,28 @@ app.on('ready', function() {
   }).catch((err) => {
 
   });
-  
+
   tray.create(mainWindow);
 
   // mainWindow.openDevTools();
   mainWindow.on('closed', function() {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
     mainWindow = null;
+  });
+  mainWindow.on('close', e => {
+    if (!isQuitting) {
+      e.preventDefault();
+      if (process.platform === 'darwin') {
+        app.hide();
+      } else {
+        mainWindow.hide();
+      }
+    }
+  });
+
+  app.on('before-quit', function() {
+    isQuitting = true;
   });
 });

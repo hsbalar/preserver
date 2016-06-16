@@ -51,8 +51,6 @@
 .grid-container {
   -moz-column-width: 16em;
   -webkit-column-width: 16em;
-  transition: all 0.5s;
-  -webkit-transition: all 0.5s;
 }
 
 .grid-item {
@@ -135,4 +133,22 @@
   .edit-saved-textera {
     min-height: 400px !important;    
   }
+}
+
+.animate {
+	-webkit-animation: cssAnimation 0.456s 1 ease;
+	-moz-animation: cssAnimation 0.456s 1 ease;
+	-o-animation: cssAnimation 0.456s 1 ease;
+}
+@-webkit-keyframes cssAnimation {
+	from { -webkit-transform: rotate(0deg) scale(0.955) skew(0deg) translate(0px); }
+	to { -webkit-transform: rotate(0deg) scale(1.0) skew(0deg) translate(0px); }
+}
+@-moz-keyframes cssAnimation {
+	from { -moz-transform: rotate(0deg) scale(0.955) skew(0deg) translate(0px); }
+	to { -moz-transform: rotate(0deg) scale(1.0) skew(0deg) translate(0px); }
+}
+@-o-keyframes cssAnimation {
+	from { -o-transform: rotate(0deg) scale(0.955) skew(0deg) translate(0px); }
+	to { -o-transform: rotate(0deg) scale(1.0) skew(0deg) translate(0px); }
 }

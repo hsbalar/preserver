@@ -132,11 +132,7 @@ public notes: any;
   }
     
   deleteNote(note, noteRow) {
-<<<<<<< HEAD
     noteRow.className += this.displayList ? " animated bounceOutRight" : " animated zoomOut";
-=======
-    noteRow.className += " animated zoomOut";
->>>>>>> 5903d28f59e9c55354357080f256e7497bd77d8d
     setTimeout(() => {
       this._archiveNotesService.deleteNote(note.doc)
         .then(res => {
@@ -154,11 +150,7 @@ public notes: any;
         }, err => {
           console.log("Error", err);
         });
-<<<<<<< HEAD
     }, 150);
-=======
-    }, 100);
->>>>>>> 5903d28f59e9c55354357080f256e7497bd77d8d
   }
   
   setNoteColor(color, note) {
@@ -192,11 +184,7 @@ public notes: any;
   }
 
   unArchive(note, noteRow) {
-<<<<<<< HEAD
     noteRow.className += this.displayList ? " animated bounceOutLeft" : " animated flipOutY";
-=======
-    noteRow.className += " animated flipOutY";
->>>>>>> 5903d28f59e9c55354357080f256e7497bd77d8d
     setTimeout(() => {
       this._archiveNotesService.deleteNote(note.doc)
         .then(res => {

@@ -8,7 +8,7 @@ exports.create = function(mainWindow) {
     return;
   }
 
-  const iconPath = path.join(__dirname, 'resources/app/public/preserver_small.png');
+  const iconPath = path.join(__dirname, '/public/preserver_small.png');
 
   const toggleWin = function(){
     if (mainWindow.isVisible()) {
@@ -20,7 +20,7 @@ exports.create = function(mainWindow) {
 
   const contextMenu = electron.Menu.buildFromTemplate([
     {
-      label: 'Toggle',
+      label: 'Restore Preserver',
       click() {
         toggleWin();
       }

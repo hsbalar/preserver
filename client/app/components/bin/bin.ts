@@ -86,11 +86,7 @@ export class Bin {
     
   deleteNote() {
     if (this.toDeleteNote) {
-<<<<<<< HEAD
       this.toDeleteNoteRow.className += this.displayList ? " animated bounceOutRight" : " animated zoomOut";
-=======
-      this.toDeleteNoteRow.className += " animated zoomOut";
->>>>>>> 5903d28f59e9c55354357080f256e7497bd77d8d
       setTimeout(() => {
         this._binNotesService.deleteNote(this.toDeleteNote.doc)
           .then(res => {
@@ -109,11 +105,7 @@ export class Bin {
   }
   
   restoreNote(note, noteRow) {
-<<<<<<< HEAD
     noteRow.className += this.displayList ? " animated bounceOutLeft" : " animated flipOutY";
-=======
-    noteRow.className += " animated flipOutY";
->>>>>>> 5903d28f59e9c55354357080f256e7497bd77d8d
     setTimeout(() => {
       this._binNotesService.deleteNote(note.doc)
         .then(res => {      

@@ -18,6 +18,7 @@
                 </a>
               </li>
               <li><a href="javascript:void(0)">Settings</a></li>
+              <li><a href="javascript:void(0)" [routerLink]="['/About']">About</a></li>
             </ul>
           </li>
         </ul>
@@ -42,6 +43,7 @@
               <li><a href="javascript:void(0)" [routerLink]="['/Bin']">Recycle Bin</a></li>              
               <li class="divider"></li>
               <li><a href="javascript:void(0)">Settings</a></li>
+              <li><a href="javascript:void(0)" [routerLink]="['/About']">About</a></li>
             </ul>
           </li>
         </ul>
@@ -49,7 +51,7 @@
     </div>
   </div>
   <spinner *ngIf="spinner"></spinner>
-  <div class="{{ displayList ? 'container note animated zoomInUp' : 'container note grid-container animated zoomInUp'}}">
+  <div class="{{ displayList ? 'container note animate' : 'container note grid-container animate'}}">
     <div *ngFor='let text of notes' class="{{ displayList ? 'panel panel-default ' + text.doc.color : 'panel panel-default grid-item ' + text.doc.color}}" #noteRow [attr.id]="text.doc._id">
       <div class="panel-body my-note module line-clamp">
         <p><strong>{{text.doc?.title}}</strong></p>
