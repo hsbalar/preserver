@@ -21,6 +21,11 @@ const config = {
 
   plugins: [
     new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
+    // new webpack.optimize.UglifyJsPlugin({ compressor: { warnings: false } }),
+    // new webpack.optimize.DedupePlugin(),
+    // new webpack.DefinePlugin({
+    //   "process.env": { NODE_ENV: JSON.stringify("production") }
+    // })
   ],
 
   resolve: {
@@ -36,7 +41,7 @@ const config = {
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
       { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file" }
     ],
-    noParse: [ path.join(__dirname, 'node_modules', 'angular2', 'bundles') ]
+    noParse: [ path.join(__dirname, 'node_modules', '@angular', 'bundles') ]
   },
   postcss: [ autoprefixer ]
 };
