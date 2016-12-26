@@ -4,7 +4,8 @@
   "description": "A webpack starter for Angular",
   "main": "main.js",
   "scripts": {
-    "start": "webpack-dev-server --port 8080",
+    "start": "node start-electron.js",
+    "dev": "webpack-dev-server --port 8080",
     "build": "rimraf dist && webpack --config config/webpack.prod.js --progress"
   },
   "license": "MIT",
