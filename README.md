@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="http://www.hiteshbalar.com/preserver"><img src="https://raw.githubusercontent.com/hsbalar/Preserver/dev/public/logo.png" alt="Markdownify" width="208"></a>
+  <a href="http://www.hiteshbalar.com/preserver"><img src="https://raw.githubusercontent.com/hsbalar/Preserver/dev/public/images/logo.png" alt="Markdownify" width="208"></a>
   <br>
   Preserver
   <br>
@@ -9,9 +9,9 @@
 <h4 align="center">Preserver is an notes organizer desktop app based on <a href="http://electron.atom.io" target="_blank">Electron</a>.</h4>
 <h5 align="center">Organize your life with one of these incredibly useful Desktop applications for keeping track of notes, tasks, and to-do lists.</h5>
 
-![screenshot](https://raw.githubusercontent.com/hsbalar/Preserver/master/public/screen1.png)
+![screenshot](https://raw.githubusercontent.com/hsbalar/Preserver/master/public/images/screen1.png)
 <br>
-![screenshot](https://raw.githubusercontent.com/hsbalar/Preserver/master/public/screen2.png)
+![screenshot](https://raw.githubusercontent.com/hsbalar/Preserver/master/public/images/screen2.png)
 
 ### Basic useful feature of Preserver application:
 
@@ -33,7 +33,7 @@
 >  `npm run build`
 >  
 >  `node start`
- 
+
 #### That's it ...
 
 ## Library stack used

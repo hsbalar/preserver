@@ -1,14 +1,9 @@
 {
-  "globalDependencies": {
-    "dragula": "github:DefinitelyTyped/DefinitelyTyped/dragula/dragula.d.ts#e8bdd1be7c8a81dcf9f4cdae126690c7bf249501",
-    "es6-shim": "registry:dt/es6-shim#0.31.2+20160317120654",
-    "jquery": "registry:dt/jquery#1.10.0+20160417213236",
-    "node": "registry:dt/node#4.0.0+20160501135006"
-  },
-  "ambientDependencies": {
-    "require": "github:DefinitelyTyped/DefinitelyTyped/requirejs/require.d.ts"
-  },
   "dependencies": {
-    "lodash": "registry:npm/lodash#4.0.0+20160416211519"
+    "dragula": "registry:npm/dragula#3.6.8+20160410191048",
+    "lodash": "registry:npm/lodash#4.0.0+20161015015725"
+  },
+  "globalDependencies": {
+    "pouchdb": "registry:dt/pouchdb#5.4.4+20160916155957"
   }
 }

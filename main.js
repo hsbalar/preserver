@@ -1,12 +1,10 @@
 const electron = require('electron');
+const tray = require('./tray');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
-const tray = require('./tray');
-let isQuitting = false;
+const mainPage = 'file://' + __dirname + '/public/index.html';
 
-// register babel hook
-require("babel-register")();
-
+var isQuitting = false;
 var mainWindow = null;
 
 app.on('window-all-closed', function() {
@@ -23,15 +21,10 @@ app.on('ready', function() {
     },
   	width: 1200,
 		height: 750,
-    icon: __dirname + '/resources/app/public/logo.ico'
+    icon: __dirname + '/resources/app/public/images/logo.ico'
   });
 
-  require("./server").start()
-  .then((app) => {
-     mainWindow.loadURL('http://localhost:3000');
-  }).catch((err) => {
-
-  });
+  mainWindow.loadURL(mainPage);
 
   tray.create(mainWindow);
 

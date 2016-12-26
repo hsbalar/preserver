@@ -8,7 +8,7 @@ exports.create = function(mainWindow) {
     return;
   }
 
-  const iconPath = path.join(__dirname, '/public/preserver_small.png');
+  const iconPath = path.join(__dirname, '/public/images/preserver_small.png');
 
   const toggleWin = function(){
     if (mainWindow.isVisible()) {
