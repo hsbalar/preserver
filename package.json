@@ -1,8 +1,13 @@
 {
-  "name": "angular2-webpack",
-  "version": "1.0.0",
-  "description": "A webpack starter for Angular",
+  "name": "preserver",
+  "version": "3.0.0",
+  "description": "Preserver is an notes organizer desktop app based on Electron.",
   "main": "main.js",
+  "author": "Hitesh Balar <www.hiteshbalar.com>",
+  "contributors": [{
+    "name": "Hitesh Balar",
+    "email": "hsbalar@gmail.com"
+  }],
   "scripts": {
     "start": "node start-electron.js",
     "dev": "webpack-dev-server --port 8080",
