@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Preserver</title>
+    <link href="./public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./public/css/material.min.css" rel="stylesheet">
+    <link href="./public/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./public/css/animate.css">
+    <link rel="stylesheet" type="text/css" href="./public/css/styles.css">
+  </head>
+  <body>
+    <my-app>
+        <div class="loaders-container">
+          <div class="spinner">
+              <div class="circle"></div>
+          </div>
+        </div>
+        <style>
+          body {
+            background: #009688;
+          }
+          .loaders-container {
+            width: 100%;
+            height: 100%;
+          }
+          .loaders-container .spinner {
+            box-sizing: border-box;
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            margin-top: -35px;
+            margin-left: -35px;
+          }
+          .circle {
+            box-sizing: border-box;
+            width: 80px;
+            height: 80px;
+            border-radius: 100%;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #FFF;
+            -webkit-animation: spin 1s infinite linear;
+            animation: spin 1s infinite linear;
+          }
+          @-webkit-keyframes spin {
+            100% {
+              -webkit-transform: rotate(360deg);
+              transform: rotate(360deg);
+            }
+          }
+          @keyframes spin {
+            100% {
+              -webkit-transform: rotate(360deg);
+              transform: rotate(360deg);
+            }
+          }
+        </style>
+    </my-app>
+    <script src="./public/js/jquery.min.js"></script>
+    <script src="./public/js/bootstrap.min.js"></script>
+    <script src="./public/js/material.js"></script>
+    <script src="./public/js/index.js"></script>
+  </body>
+</html>
