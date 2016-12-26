@@ -28,7 +28,7 @@ app.on('ready', function() {
 
   tray.create(mainWindow);
 
-  mainWindow.openDevTools();
+  // mainWindow.openDevTools();
   mainWindow.on('closed', function() {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
