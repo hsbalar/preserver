@@ -21,7 +21,7 @@ app.on('ready', function() {
     },
   	width: 1200,
 		height: 750,
-    icon: __dirname + '/resources/app/public/images/logo.ico'
+    icon: __dirname + '/resources/app/public/images/preserver_icon.png'
   });
 
   mainWindow.loadURL(mainPage);
