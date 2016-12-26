@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="http://www.hiteshbalar.com/preserver"><img src="https://raw.githubusercontent.com/hsbalar/Preserver/dev/public/images/logo.png" alt="Markdownify" width="208"></a>
+  <a href="http://www.hiteshbalar.com/preserver"><img src="https://raw.githubusercontent.com/hsbalar/Preserver/master/public/images/logo.png" alt="Markdownify" width="208"></a>
   <br>
   Preserver
   <br>
@@ -30,9 +30,10 @@
 >  
 >  `typings install` (Before that `npm install typings -g`)
 >  
->  `npm run build`
+>  `npm start`
 >  
->  `node start`
+>  For developement `npm run dev` (application running at `localhost:8080`)
+
 
 #### That's it ...
 
