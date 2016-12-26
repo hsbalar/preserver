@@ -1,13 +1,20 @@
 {
   "name": "preserver",
+  "productName": "Preserver",
   "version": "3.0.0",
   "description": "Preserver is an notes organizer desktop app based on Electron.",
   "main": "main.js",
   "author": "Hitesh Balar <www.hiteshbalar.com>",
-  "contributors": [{
-    "name": "Hitesh Balar",
-    "email": "hsbalar@gmail.com"
-  }],
+  "contributors": [
+    {
+      "name": "Hitesh Balar",
+      "email": "hsbalar@gmail.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hsbalar/Preserver.git"
+  },
   "scripts": {
     "start": "node start-electron.js",
     "dev": "webpack-dev-server --port 8080",
