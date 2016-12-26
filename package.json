@@ -8,11 +8,6 @@
     "name": "Hitesh Balar",
     "email": "hsbalar@gmail.com"
   }],
-  "scripts": {
-    "start": "node start-electron.js",
-    "dev": "webpack-dev-server --port 8080",
-    "build": "rimraf dist && webpack --config config/webpack.prod.js --progress"
-  },
   "license": "MIT",
   "dependencies": {
     "@angular/common": "~2.4.0",
