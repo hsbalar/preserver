@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="http://www.hiteshbalar.com/preserver"><img src="https://raw.githubusercontent.com/hsbalar/Preserver/master/public/images/logo.png" alt="Markdownify" width="208"></a>
+  <a href="http://www.hiteshbalar.com/preserver"><img src="https://raw.githubusercontent.com/hsbalar/Preserver/master/public/images/logo.png" alt="" width="208"></a>
   <br>
   Preserver
   <br>
