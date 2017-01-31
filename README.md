@@ -47,7 +47,7 @@
 
 ## Download
 
-You can [download](https://github.com/hsbalar/preserver/releases) Preserver application for Windows, Darwin and Linux.
+You can [download](https://github.com/hsbalar/Preserver/releases/) Preserver application for Windows, Darwin and Linux.
 
 #### License
 
