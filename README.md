@@ -18,7 +18,7 @@
  * **Create notes**
  * **Archive notes**
  * **Move notes to trash & restore back**
- * **Assign lables to notes**
+ * **Assign labels to notes**
  * **Create todo list**
  * **Upload images to note**
  * **Set color to Notes as per your priority**
