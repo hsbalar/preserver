@@ -1,7 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
+
 @Component({
   selector: 'my-app',
-  template: '<router-outlet></router-outlet>',
-  styleUrls: [ './app.component.css' ]
+  template: '<router-outlet></router-outlet>'
 })
-export class AppComponent { }
+export class AppComponent implements AfterViewInit {
+
+  ngAfterViewInit() {
+    $.material.init();
+  }
+
+}

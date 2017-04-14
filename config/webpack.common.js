@@ -11,7 +11,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.ts', '.js']
+    extensions: ['', '.ts', '.js', 'css']
   },
 
   module: {
@@ -43,7 +43,8 @@ module.exports = {
     }),
 
     new HtmlWebpackPlugin({
-      template: 'src/index.html'
+      template: 'src/index.html',
+      filename: "../index.html"
     })
   ]
 };

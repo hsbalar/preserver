@@ -1,10 +1,10 @@
 import { NgModule }       from '@angular/core';
 import { Routes,
-         RouterModule } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { ArchiveComponent } from './components/archive-notes/archive.component';
-import { BinComponent } from './components/bin/bin.component';
-import { AboutComponent } from './components/about/about.component';
+         RouterModule }   from '@angular/router';
+import { BinComponent,
+         HomeComponent,
+         ArchiveComponent,
+         AboutComponent } from './components';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/notes', pathMatch: 'full'},

@@ -17,8 +17,9 @@
   },
   "scripts": {
     "start": "node start-electron.js",
-    "dev": "webpack-dev-server --port 8080",
-    "build": "rimraf dist && webpack --config config/webpack.prod.js --progress"
+    "dev": "webpack-dev-server --content-base public/ --port 8080",
+    "build": "npm run clean && webpack --config config/webpack.prod.js --progress --profile --bail",
+    "clean": "rimraf public/dist"
   },
   "license": "MIT",
   "dependencies": {

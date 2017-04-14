@@ -1,21 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit }    from '@angular/core';
 import { NotificationsService } from "angular2-notifications";
+import { Subscription }         from 'rxjs/Subscription';
 
-import { Subscription } from 'rxjs/Subscription';
-import * as _ from 'lodash';
-
-import { DragulaService } from '../../providers/dragula';
-
-import { NotesTable } from '../../services/notes_table';
-import { NotesTableService } from '../../services/notes_table.service';
-import { BinNotesTableService } from '../../services/bin_table.service';
-import { ArchiveNotesTableService } from '../../services/archive_table.service';
+import { NotesTable,
+         DragulaService,
+         NotesTableService }    from '../../services';
+import * as _                   from 'lodash';
 
 @Component({
   selector: 'Home',
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
+
   public order:any;
   public notes: any;
   public draft: any;
@@ -33,8 +30,6 @@ export class HomeComponent implements OnInit {
   constructor (
       private dragulaService: DragulaService,
       private _notesService: NotesTableService,
-      private _archiveService: ArchiveNotesTableService,
-      private _binService: BinNotesTableService,
       private _notificationsService: NotificationsService
     ) {
     this.notes = [];
@@ -43,35 +38,19 @@ export class HomeComponent implements OnInit {
     this.order = [];
     this.orderNotes = [];
     this.notificationOptions = {
-      timeOut: 3000,
+      timeOut: 2000,
       lastOnBottom: true,
       clickToClose: true,
       showProgressBar: false,
       pauseOnHover: true,
       preventDuplicates: false,
-      theClass: "notes-notifications",
-      rtl: true
+      theClass: "notes-notifications notes",
+      rtl: false
     };
-    dragulaService.drag.subscribe((value: any) => {
-      this.onDrag(value.slice(1));
-    });
     dragulaService.dropModel.subscribe((value: any) => {
       this.onDropModel(value.slice(1));
     });
-    dragulaService.drop.subscribe((value: any) => {
-      this.onDrop(value);
-    });
-    dragulaService.removeModel.subscribe((value: any) => {
-      this.onRemoveModel(value.slice(1));
-    });
-
     this.displayList = localStorage.getItem("displayNotesTypeList") == 'true' ? true : false;
-
-  }
-
-
-  private onDrag(args: any) {
-    let [e, el] = args;
   }
 
   ngOnInit() {
@@ -87,23 +66,11 @@ export class HomeComponent implements OnInit {
 
   private onDropModel(args: any) {
     let [el, target, source] = args;
-    // do something else
-
     let order = [];
     this.notes.forEach(row => {
       order.push(row.doc._id);
     });
-
     localStorage.setItem("order", JSON.stringify(order));
-  }
-
-  private onRemoveModel(args: any) {
-    let [el, source] = args;
-    // do something else
-  }
-
-  private onDrop(args: any) {
-    let [e, el] = args;
   }
 
   ngOnDestroy() {
@@ -111,7 +78,7 @@ export class HomeComponent implements OnInit {
   }
 
   refreshNotesTables() {
-    this._notesService.getNotes().then(
+    this._notesService.getNotes('notes').then(
       alldoc => {
         this.notes_table = alldoc.rows;
         let testNotes = [];
@@ -147,7 +114,7 @@ export class HomeComponent implements OnInit {
       this.draft.time = new Date().toISOString();
       this.draft.label = "";
       this.draft.restore = "note";
-      this._notesService.saveNote(this.draft)
+      this._notesService.saveNote('notes', this.draft)
         .then(res => {
           notetextarea.placeholder = "Write a note";
           notetextarea.style.height = "auto";
@@ -158,7 +125,6 @@ export class HomeComponent implements OnInit {
           this.refreshNotesTables();
         }, err => {
           this.draft = {};
-          console.log("Error", err);
           notetextarea.placeholder = "Write a note";
           notetextarea.style.height = "auto";
           notetextarea.style.height = "48px";
@@ -170,40 +136,29 @@ export class HomeComponent implements OnInit {
       notetextarea.value = null;
       this.inputFocusClass = false;
     }
-
-
   }
 
   deleteNote(note, noteRow) {
     noteRow.className += this.displayList ? " animated bounceOutRight" : " animated zoomOut";
     setTimeout(() => {
-      this._notesService.deleteNote(note.doc)
+      this._notesService.deleteNote('notes', note.doc)
         .then(res => {
-          this._notificationsService.create("Done", "Note moved to Recycle Bin", "success");
+          this._notificationsService.success("Done", "Note moved to Recycle Bin");
           this.deleteFromOrder(note);
           this.refreshNotesTables();
-        }, err => {
-          console.log("Error", err);
         });
       let binNote = note.doc;
       delete binNote._rev;
-      this._binService.saveNote(binNote)
-        .then(res => {
-
-        }, err => {
-          console.log("Error", err);
-        });
+      this._notesService.saveNote('binNotes', binNote);
     }, 200);
   }
 
   setNoteColor(color, note) {
     if (note.doc.color != color) {
       note.doc.color = color;
-      this._notesService.updateNote(note.doc)
+      this._notesService.updateNote('notes', note.doc)
         .then(res => {
           this.refreshNotesTables();
-        }, err => {
-          console.log("Error", err);
         });
     }
   }
@@ -211,13 +166,12 @@ export class HomeComponent implements OnInit {
   updateModalNote(note) {
     note.doc.note = this.editNoteDraft.note;
     note.doc.title = this.editNoteDraft.title;
-    this._notesService.updateNote(note.doc)
+    this._notesService.updateNote('notes', note.doc)
       .then(res => {
         this.editNoteDraft = {};
         this.refreshNotesTables();
       }, err => {
         this.editNoteDraft = {};
-        console.log("Error", err);
       });
   }
 
@@ -229,21 +183,19 @@ export class HomeComponent implements OnInit {
   makeArchive(note, noteRow) {
     noteRow.className += this.displayList ? " animated bounceOutLeft" : " animated flipOutY";
     setTimeout(() => {
-      this._notesService.deleteNote(note.doc)
+      this._notesService.deleteNote('notes', note.doc)
         .then(res => {
-          this._notificationsService.create("Done", "Note archived", "success");
+          this._notificationsService.success("Done", "Note archived");
           this.deleteFromOrder(note);
           this.refreshNotesTables();
-        }, err => {
-          console.log("Error", err);
         });
       let archive_note = note;
       delete archive_note.doc._rev;
       archive_note.doc.restore = "archive";
-      this._archiveService.saveNote(archive_note.doc)
+      this._notesService.saveNote('archiveNotes', archive_note.doc)
         .then(res => {
           this.updateArchiveOrder(archive_note.doc);
-        }, err => {});
+        });
     }, 200);
   }
 
@@ -263,7 +215,7 @@ export class HomeComponent implements OnInit {
   }
 
   updateOrder(draft) {
-    let newOrder = [];
+    let newOrder: any = [];
     if (localStorage.getItem('order')) {
       newOrder = JSON.parse(localStorage.getItem('order'));
       newOrder.unshift(draft._id);
@@ -274,7 +226,7 @@ export class HomeComponent implements OnInit {
   }
 
   updateArchiveOrder(draft: any) {
-    let newArchiveOrder = [];
+    let newArchiveOrder: any = [];
     if (localStorage.getItem('archiveOrder')) {
       newArchiveOrder = JSON.parse(localStorage.getItem('archiveOrder'));
       newArchiveOrder.unshift(draft._id);

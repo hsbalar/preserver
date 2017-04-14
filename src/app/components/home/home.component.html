@@ -6,11 +6,10 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="glyphicon glyphicon-option-vertical"></i></a>
             <ul class="dropdown-menu">
-
               <li class="dropdown-header">Preferences</li>
               <li><a [routerLink]="['/notes']">My Notes</a></li>
-              <li><a [routerLink]="['/archive-notes']">Archive Notes</a></li>   
-              <li><a href="javascript:void(0)" [routerLink]="['/recycle-bin']">Recycle Bin</a></li>                      
+              <li><a [routerLink]="['/archive-notes']">Archive Notes</a></li>
+              <li><a href="javascript:void(0)" [routerLink]="['/recycle-bin']">Recycle Bin</a></li>
               <li role="separator" class="divider"></li>
               <li>
                 <a href="javascript:void(0)" (click)="displayTypeChange()">
@@ -18,7 +17,7 @@
                 </a>
               </li>
               <li><a href="javascript:void(0)">Settings</a></li>
-              <li><a href="javascript:void(0)" [routerLink]="['/about']">About</a></li>              
+              <li><a href="javascript:void(0)" [routerLink]="['/about']">About</a></li>
             </ul>
           </li>
         </ul>
@@ -40,7 +39,7 @@
               <li class="dropdown-header">Preferences</li>
               <li><a href="javascript:void(0)" [routerLink]="['/notes']">My Notes</a></li>
               <li><a href="javascript:void(0)" [routerLink]="['/archive-notes']">Archive Notes</a></li>
-              <li><a href="javascript:void(0)" [routerLink]="['/recycle-bin']">Recycle Bin</a></li>              
+              <li><a href="javascript:void(0)" [routerLink]="['/recycle-bin']">Recycle Bin</a></li>
               <li class="divider"></li>
               <li><a href="javascript:void(0)">Settings</a></li>
               <li><a href="javascript:void(0)" [routerLink]="['/about']">About</a></li>
@@ -55,7 +54,7 @@
         <div class="panel-body">
           <div class="form-group label-floating" *ngIf="inputFocusClass">
              <input type="text" class="form-control" placeholder="Title" [(ngModel)]="draft.title" >
-          </div>          
+          </div>
           <div class="form-group label-floating">
              <textarea class="form-control" #textarea autosize placeholder="Write a note" [(ngModel)]="draft.note" (focus)="_setInputFocus(true)"></textarea>
           </div>
@@ -78,7 +77,7 @@
         <ul class="note-footer">
           <li><a href="javascript:void(0)" class="btn btn-link btn-raised"
              title="Archive" (click)="makeArchive(text, noteRow)">
-            <i class="fa fa-download"></i>        
+            <i class="fa fa-download"></i>
           </a></li>
           <li class="dropup">
             <a data-target="#" class="btn btn-link btn-raised dropup"
@@ -93,12 +92,12 @@
               <li><a href="javascript:void(0)" (click)="setNoteColor('label-warning', text)" class="btn btn-warning btn-fab-mini"><i class=""></i></a></li>
               <li><a href="javascript:void(0)" (click)="setNoteColor('label-danger', text)" class="btn btn-danger btn-fab-mini"><i class=""></i></a></li>
               <li><a href="javascript:void(0)" (click)="setNoteColor('label-darkgray', text)" class="btn btn-darkgray btn-fab-mini"><i class=""></i></a></li>
-              <li><a href="javascript:void(0)" (click)="setNoteColor('label-primary-old', text)" class="btn btn-primary-old btn-fab-mini"><i class=""></i></a></li>              
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-primary-old', text)" class="btn btn-primary-old btn-fab-mini"><i class=""></i></a></li>
             </ul>
           </li>
           <li><a href="javascript:void(0)" class="btn btn-link btn-raised"
              title="Delete" (click)="deleteNote(text, noteRow)">
-            <i class="fa fa-trash"></i>          
+            <i class="fa fa-trash"></i>
           </a></li>
         </ul>
       </div>
@@ -109,11 +108,11 @@
               <h4 class="modal-title">
                 <div class="form-group label-floating">
                 <input type="text" class="form-control edit-saved-input" placeholder="Title" [(ngModel)]="editNoteDraft.title" [value]="text.doc.title ? text.doc.title : ''" >
-                </div>                
+                </div>
               </h4>
             </div>
             <div class="modal-body">
-              <textarea class="form-control edit-saved-textera" #editSavedTextarea modaleditorautosize placeholder="Write a note" [(ngModel)]="editNoteDraft.note" [value]="text.doc?.note"></textarea>              
+              <textarea class="form-control edit-saved-textera" #editSavedTextarea modaleditorautosize placeholder="Write a note" [(ngModel)]="editNoteDraft.note" [value]="text.doc?.note"></textarea>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" (click)="updateModalNote(text)">Done</button>

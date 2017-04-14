@@ -9,8 +9,8 @@
 
               <li class="dropdown-header">Preferences</li>
               <li><a [routerLink]="['/notes']">My Notes</a></li>
-              <li><a [routerLink]="['/archive-notes']">Archive Notes</a></li>   
-              <li><a href="javascript:void(0)" [routerLink]="['/recycle-bin']">Recycle Bin</a></li>                       
+              <li><a [routerLink]="['/archive-notes']">Archive Notes</a></li>
+              <li><a href="javascript:void(0)" [routerLink]="['/recycle-bin']">Recycle Bin</a></li>
               <li role="separator" class="divider"></li>
               <li>
                 <a href="javascript:void(0)" (click)="displayTypeChange()">
@@ -40,7 +40,7 @@
               <li class="dropdown-header">Preferences</li>
               <li><a href="javascript:void(0)" [routerLink]="['/notes']">My Notes</a></li>
               <li><a href="javascript:void(0)" [routerLink]="['/archive-notes']">Archive Notes</a></li>
-              <li><a href="javascript:void(0)" [routerLink]="['/recycle-bin']">Recycle Bin</a></li>              
+              <li><a href="javascript:void(0)" [routerLink]="['/recycle-bin']">Recycle Bin</a></li>
               <li class="divider"></li>
               <li><a href="javascript:void(0)">Settings</a></li>
               <li><a href="javascript:void(0)" [routerLink]="['/about']">About</a></li>
@@ -101,7 +101,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">CANCEL</button>
-          <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" (click)="deleteNote()">DELETE</button>
+          <button type="button" class="btn btn-primary btn-sm delete-model-btn" data-dismiss="modal" (click)="deleteNote()">DELETE</button>
         </div>
       </div>
     </div>

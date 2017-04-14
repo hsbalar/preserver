@@ -1,13 +1,12 @@
-import {
-  Directive,
-  Input,
-  ElementRef,
-  OnInit,
-  OnChanges,
-  SimpleChange
-} from '@angular/core';
-import {DragulaService} from '../providers/dragula';
-import * as dragula from 'dragula';
+import { Directive,
+         Input,
+         ElementRef,
+         OnInit,
+         OnChanges,
+         SimpleChange }   from '@angular/core';
+import * as dragula       from 'dragula';
+
+import { DragulaService } from '../services';
 
 @Directive({
   selector: '[dragula]'
@@ -23,7 +22,6 @@ export class Dragula implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    // console.log(this.bag);
     let bag = this.dragulaService.find(this.bag);
     let checkModel = () => {
       if (this.dragulaModel) {
@@ -48,8 +46,6 @@ export class Dragula implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: {[propName: string]: SimpleChange}) {
-    // console.log('dragula.directive: ngOnChanges');
-    // console.log(changes);
     if (changes && changes['dragulaModel']) {
       if (this.drake) {
         if (this.drake.models) {

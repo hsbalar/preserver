@@ -1,42 +1,41 @@
-import { NgModule } from '@angular/core';
-import { FormsModule }   from '@angular/forms';
-import { BrowserModule }  from '@angular/platform-browser';
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app.routing';
-import { HomeComponent } from './components/home/home.component';
-import { ArchiveComponent } from './components/archive-notes/archive.component';
-import { BinComponent } from './components/bin/bin.component';
-import { AboutComponent } from './components/about/about.component';
-import { Spinner } from './components/spinner/spinner';
+import { NgModule }             from '@angular/core';
+import { FormsModule }          from '@angular/forms';
+import { BrowserModule }        from '@angular/platform-browser';
 
-import { NotificationsService, SimpleNotificationsModule } from "angular2-notifications";
+import { AppRoutingModule }     from './app.routing';
+import { AppComponent }         from './app.component';
+import { Spinner,
+         BinComponent,
+         HomeComponent,
+         AboutComponent,
+         ArchiveComponent }     from './components';
 
-import { Dragula } from './directives/dragula';
+import { Dragula }              from './directives/dragula';
 import { FluidHeightDirective } from './directives/fluid-height';
-import { DragulaService } from './providers/dragula';
-import { NotesTable } from './services/notes_table';
-import { NotesTableService } from './services/notes_table.service';
-import { BinNotesTableService } from './services/bin_table.service';
-import { ArchiveNotesTableService } from './services/archive_table.service';
+
+import { NotesTable,
+         DragulaService,
+         NotesTableService }    from './services';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 
 @NgModule({
   imports: [
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
-    SimpleNotificationsModule,
-    FormsModule
+    SimpleNotificationsModule.forRoot()
   ],
   declarations: [
-    AppComponent,
-    HomeComponent,
-    ArchiveComponent,
-    BinComponent,
-    AboutComponent,
     Spinner,
     Dragula,
+    AppComponent,
+    BinComponent,
+    HomeComponent,
+    AboutComponent,
+    ArchiveComponent,
     FluidHeightDirective
   ],
-  providers: [ DragulaService, NotesTable, NotesTableService, BinNotesTableService, ArchiveNotesTableService ],
+  providers: [ DragulaService, NotesTable, NotesTableService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
