@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="http://www.hiteshbalar.com/preserver"><img src="https://raw.githubusercontent.com/hsbalar/Preserver/master/public/images/logo.png" alt="Markdownify" width="208"></a>
+  <a href="http://www.hiteshbalar.com/preserver"><img src="https://raw.githubusercontent.com/hsbalar/Preserver/master/public/images/logo.png" alt="" width="208"></a>
   <br>
   Preserver
   <br>
@@ -18,7 +18,7 @@
  * **Create notes**
  * **Archive notes**
  * **Move notes to trash & restore back**
- * **Assign lables to notes**
+ * **Assign labels to notes**
  * **Create todo list**
  * **Upload images to note**
  * **Set color to Notes as per your priority**
@@ -47,7 +47,7 @@
 
 ## Download
 
-You can [download](https://github.com/hsbalar/Preserver/releases/tag/v1.0.0) Preserver application for Windows, Darwin and Linux.
+You can [download](https://github.com/hsbalar/Preserver/releases/) Preserver application for Windows, Darwin and Linux.
 
 #### License
 
