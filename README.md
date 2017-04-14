@@ -30,6 +30,8 @@
 >  
 >  `typings install` (Before that `npm install typings -g`)
 >  
+>  `npm run build`
+>  
 >  `npm start`
 >  
 >  For developement `npm run dev` (application running at `localhost:8080`)
