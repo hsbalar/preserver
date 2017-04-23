@@ -2,7 +2,6 @@
 .gu-mirror{position:fixed!important;margin:0!important;z-index:9999!important;opacity:.8;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";filter:alpha(opacity=80)}.gu-hide{display:none!important}.gu-unselectable{-webkit-user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;user-select:none!important}.gu-transit{opacity:.2;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";filter:alpha(opacity=20)}
 
 .note .panel {
-  margin: 8px;
   transition: opacity 0.4s ease-in-out;
 }
 
@@ -25,6 +24,10 @@
 .note-editor textarea {
   font-size: 17px;
   word-wrap: break-word;
+}
+
+.my-note {
+  padding-bottom: 0px;
 }
 
 .my-note p {
@@ -144,6 +147,19 @@
 
 .panel-footer .open > .dropdown-menu {
   padding: 10px 5px;
+}
+
+.note-footer {
+  margin-bottom: 0px;
+}
+
+.reminder-info {
+  padding: 0px 15px 5px 15px;
+  color: #747474;
+}
+
+.reminder-info span a {
+  color: #747474;  
 }
 
 .label-default {
@@ -267,12 +283,8 @@
   resize: none !important;
  }
 
-.edit-saved .modal-header {
-  padding-left: 14px !important;
-}
-
-.modal-content .modal-body {
-  padding: 0px 0px 5px 14px!important;
+.edit-saved .modal-body {
+  padding-top: 0px !important;
 }
 
 .grid-container {
@@ -388,4 +400,13 @@
 @-o-keyframes cssAnimation {
 	from { -o-transform: rotate(0deg) scale(0.955) skew(0deg) translate(0px); }
 	to { -o-transform: rotate(0deg) scale(1.0) skew(0deg) translate(0px); }
+}
+
+.ngui-datetime-picker-wrapper ngui-datetime-picker {
+  position: relative !important;
+  top: 0px !important;
+}
+
+.ngui-datetime-picker .days {
+  padding: 0px !important; 
 }

@@ -17,6 +17,8 @@ export class ArchiveComponent {
   public notes: any;
   public orderNotes: any;
   public editNoteDraft: any;
+  public toEditNote: any;
+  public remindMe: any;
   public notificationOptions: any;
   public spinner: boolean = true;
   public displayList: boolean = false;
@@ -26,12 +28,18 @@ export class ArchiveComponent {
   public subscription: Subscription;
 
   constructor (
-      private dragulaService: DragulaService,
+      private _dragulaService: DragulaService,
       private _notesService: NotesTableService,
       private _notificationsService: NotificationsService
     ) {
     this.notes = [];
     this.editNoteDraft = {};
+    this.toEditNote = null;
+    this.remindMe = {
+      date: null,
+      repeat: 'doesnotrepeat',
+      noteToSet: null
+    };
     this.order = [];
     this.orderNotes = [];
     this.notificationOptions = {
@@ -45,7 +53,7 @@ export class ArchiveComponent {
       rtl: false
     };
 
-    dragulaService.dropModel.subscribe((value) => {
+    _dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value.slice(1));
     });
     this.displayList = localStorage.getItem("displayArchiveTypeList") == 'true' ? true : false;
@@ -128,6 +136,37 @@ export class ArchiveComponent {
     }
   }
 
+  setRemindMeNote(note) {
+    this.remindMe.noteToSet = note;
+  }
+
+  setReminderClick() {
+    if (this.remindMe.date) {
+      this.remindMe.noteToSet.doc.reminder = {
+        date: this.remindMe.date.toString(),
+        repeat: this.remindMe.repeat
+      };
+      this._notesService.updateNote('archiveNotes', this.remindMe.noteToSet.doc)
+        .then(res => {
+          this.remindMe.date = null;
+          this.remindMe.repeat = 'doesnotrepeat';
+          this.remindMe.noteToSet = null;
+          this._notesService.updateReminderTable('archiveNotes');
+          this.refreshNotesTables();
+          this._notificationsService.alert("Done", "Reminder set");
+        }, err => {
+          this.editNoteDraft = {};
+        });
+    }
+  }
+
+  removeReminder(note) {
+    note.doc.reminder = null;
+    this._notesService.updateNote('archiveNotes', note.doc);
+    this._notesService.updateReminderTable('archiveNotes');    
+    this.refreshNotesTables();    
+  }
+
   updateModalNote(note) {
     note.doc.note = this.editNoteDraft.note;
     note.doc.title = this.editNoteDraft.title;
@@ -141,6 +180,7 @@ export class ArchiveComponent {
   }
 
   editModalNoteClick(note) {
+    this.toEditNote = note;
     this.editNoteDraft.title = note.doc.title;
     this.editNoteDraft.note = note.doc.note;
   }

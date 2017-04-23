@@ -1,7 +1,7 @@
 {
   "name": "preserver",
   "productName": "Preserver",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Preserver is an notes organizer desktop app based on Electron.",
   "main": "main.js",
   "author": "Hitesh Balar <www.hiteshbalar.com>",
@@ -31,6 +31,7 @@
     "@angular/platform-browser": "~2.4.0",
     "@angular/platform-browser-dynamic": "~2.4.0",
     "@angular/router": "~3.4.0",
+    "@ngui/datetime-picker": "^0.16.1",
     "angular2-notifications": "^0.4.48",
     "core-js": "^2.4.1",
     "dragula": "^3.7.2",

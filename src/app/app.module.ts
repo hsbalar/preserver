@@ -1,6 +1,9 @@
 import { NgModule }             from '@angular/core';
 import { FormsModule }          from '@angular/forms';
 import { BrowserModule }        from '@angular/platform-browser';
+import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
+import { SimpleNotificationsModule,
+         PushNotificationsModule }  from 'angular2-notifications';
 
 import { AppRoutingModule }     from './app.routing';
 import { AppComponent }         from './app.component';
@@ -16,13 +19,14 @@ import { FluidHeightDirective } from './directives/fluid-height';
 import { NotesTable,
          DragulaService,
          NotesTableService }    from './services';
-import { SimpleNotificationsModule } from 'angular2-notifications';
 
 @NgModule({
   imports: [
     FormsModule,
     BrowserModule,
     AppRoutingModule,
+    NguiDatetimePickerModule,
+    PushNotificationsModule,
     SimpleNotificationsModule.forRoot()
   ],
   declarations: [

@@ -18,6 +18,8 @@ export class HomeComponent implements OnInit {
   public draft: any;
   public orderNotes: any;
   public editNoteDraft: any;
+  public toEditNote: any;
+  public remindMe: any;
   public notificationOptions: any;
   public spinner: boolean = true;
   public displayList: boolean = false;
@@ -28,13 +30,19 @@ export class HomeComponent implements OnInit {
   public emptyHtmlMsg: boolean = false;
 
   constructor (
-      private dragulaService: DragulaService,
+      private _dragulaService: DragulaService,
       private _notesService: NotesTableService,
       private _notificationsService: NotificationsService
     ) {
     this.notes = [];
     this.draft = {};
     this.editNoteDraft = {};
+    this.toEditNote = null;
+    this.remindMe = {
+      date: null,
+      repeat: 'doesnotrepeat',
+      noteToSet: null
+    };
     this.order = [];
     this.orderNotes = [];
     this.notificationOptions = {
@@ -47,7 +55,7 @@ export class HomeComponent implements OnInit {
       theClass: "notes-notifications notes",
       rtl: false
     };
-    dragulaService.dropModel.subscribe((value: any) => {
+    _dragulaService.dropModel.subscribe((value: any) => {
       this.onDropModel(value.slice(1));
     });
     this.displayList = localStorage.getItem("displayNotesTypeList") == 'true' ? true : false;
@@ -113,6 +121,7 @@ export class HomeComponent implements OnInit {
       this.draft.color = "label-default";
       this.draft.time = new Date().toISOString();
       this.draft.label = "";
+      this.draft.reminder = null;
       this.draft.restore = "note";
       this._notesService.saveNote('notes', this.draft)
         .then(res => {
@@ -163,6 +172,37 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  setRemindMeNote(note) {
+    this.remindMe.noteToSet = note;
+  }
+
+  setReminderClick() {
+    if (this.remindMe.date) {
+      this.remindMe.noteToSet.doc.reminder = {
+        date: this.remindMe.date.toString(),
+        repeat: this.remindMe.repeat
+      };
+      this._notesService.updateNote('notes', this.remindMe.noteToSet.doc)
+        .then(res => {
+          this.remindMe.date = null;
+          this.remindMe.repeat = 'doesnotrepeat';
+          this.remindMe.noteToSet = null;
+          this._notesService.updateReminderTable('notes');
+          this.refreshNotesTables();
+          this._notificationsService.alert("Done", "Reminder set");
+        }, err => {
+          this.editNoteDraft = {};
+        });
+    }
+  }
+
+  removeReminder(note) {
+    note.doc.reminder = null;
+    this._notesService.updateNote('notes', note.doc);
+    this._notesService.updateReminderTable('notes');
+    this.refreshNotesTables();
+  }
+
   updateModalNote(note) {
     note.doc.note = this.editNoteDraft.note;
     note.doc.title = this.editNoteDraft.title;
@@ -176,6 +216,7 @@ export class HomeComponent implements OnInit {
   }
 
   editModalNoteClick(note) {
+    this.toEditNote = note;
     this.editNoteDraft.title = note.doc.title;
     this.editNoteDraft.note = note.doc.note;
   }
