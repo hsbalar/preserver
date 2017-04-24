@@ -143,13 +143,14 @@
           <h4 class="modal-title">Remind Me</h4>
         </div>
         <div class="modal-body">
-          <label><i class="fa fa-clock-o"></i> Set date and time</label>          
+          <label><i class="fa fa-clock-o"></i> Set date and time</label>
           <div class="form-group">
               <input class="form-control"
                     readonly="readonly"
                     required
                     placeholder="Set your schedule here"
                     [(ngModel)]="remindMe.date"
+                    [min-date]="date2MinDate"
                     ngui-datetime-picker>
           </div>
           <div class="form-group">

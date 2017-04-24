@@ -8,8 +8,8 @@
             <ul class="dropdown-menu">
               <li class="dropdown-header">Preferences</li>
               <li><a [routerLink]="['/notes']">My Notes</a></li>
-              <li><a [routerLink]="['/archive-notes']">Archive Notes</a></li>   
-              <li><a href="javascript:void(0)" [routerLink]="['/recycle-bin']">Recycle Bin</a></li>                       
+              <li><a [routerLink]="['/archive-notes']">Archive Notes</a></li>
+              <li><a href="javascript:void(0)" [routerLink]="['/recycle-bin']">Recycle Bin</a></li>
               <li role="separator" class="divider"></li>
               <li>
                 <a href="javascript:void(0)" (click)="displayTypeChange()">
@@ -39,7 +39,7 @@
               <li class="dropdown-header">Preferences</li>
               <li><a href="javascript:void(0)" [routerLink]="['/notes']">My Notes</a></li>
               <li><a href="javascript:void(0)" [routerLink]="['/archive-notes']">Archive Notes</a></li>
-              <li><a href="javascript:void(0)" [routerLink]="['/recycle-bin']">Recycle Bin</a></li>              
+              <li><a href="javascript:void(0)" [routerLink]="['/recycle-bin']">Recycle Bin</a></li>
               <li class="divider"></li>
               <li><a href="javascript:void(0)">Settings</a></li>
               <li><a href="javascript:void(0)" [routerLink]="['/About']">About</a></li>
@@ -71,7 +71,7 @@
           </li>
           <li><a href="javascript:void(0)" class="btn btn-link btn-raised"
              title="Unarchive" (click)="unArchive(text, noteRow)">
-            <i class="fa fa-upload"></i>        
+            <i class="fa fa-upload"></i>
           </a></li>
           <li class="dropup">
             <a data-target="#" class="btn btn-link btn-raised dropup"
@@ -86,12 +86,12 @@
               <li><a href="javascript:void(0)" (click)="setNoteColor('label-warning', text)" class="btn btn-warning btn-fab-mini"><i class=""></i></a></li>
               <li><a href="javascript:void(0)" (click)="setNoteColor('label-danger', text)" class="btn btn-danger btn-fab-mini"><i class=""></i></a></li>
               <li><a href="javascript:void(0)" (click)="setNoteColor('label-darkgray', text)" class="btn btn-darkgray btn-fab-mini"><i class=""></i></a></li>
-              <li><a href="javascript:void(0)" (click)="setNoteColor('label-primary-old', text)" class="btn btn-primary-old btn-fab-mini"><i class=""></i></a></li>              
+              <li><a href="javascript:void(0)" (click)="setNoteColor('label-primary-old', text)" class="btn btn-primary-old btn-fab-mini"><i class=""></i></a></li>
             </ul>
           </li>
           <li><a href="javascript:void(0)" class="btn btn-link btn-raised"
              title="Delete" (click)="deleteNote(text, noteRow)">
-            <i class="fa fa-trash"></i>          
+            <i class="fa fa-trash"></i>
           </a></li>
         </ul>
       </div>
@@ -107,11 +107,11 @@
           <h4 class="modal-title">
             <div class="form-group label-floating">
             <input type="text" class="form-control edit-saved-input" placeholder="Title" [(ngModel)]="editNoteDraft.title" [value]="toEditNote?.doc.title" >
-            </div>                
+            </div>
           </h4>
         </div>
         <div class="modal-body">
-          <textarea class="form-control edit-saved-textera" #editSavedTextarea modaleditorautosize placeholder="Write a note" [(ngModel)]="editNoteDraft.note" [value]="toEditNote?.doc.note"></textarea>              
+          <textarea class="form-control edit-saved-textera" #editSavedTextarea modaleditorautosize placeholder="Write a note" [(ngModel)]="editNoteDraft.note" [value]="toEditNote?.doc.note"></textarea>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" (click)="updateModalNote(toEditNote)">Done</button>
@@ -127,13 +127,14 @@
           <h4 class="modal-title">Remind Me</h4>
         </div>
         <div class="modal-body">
-          <label><i class="fa fa-clock-o"></i> Set date and time</label>          
+          <label><i class="fa fa-clock-o"></i> Set date and time</label>
           <div class="form-group">
               <input class="form-control"
                     readonly="readonly"
                     required
                     placeholder="Set your schedule here"
                     [(ngModel)]="remindMe.date"
+                    [min-date]="date2MinDate"
                     ngui-datetime-picker>
           </div>
           <div class="form-group">

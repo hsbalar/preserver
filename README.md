@@ -17,10 +17,10 @@
 
  * **Create notes**
  * **Archive notes**
+ * **Set up reminders for your notes**
  * **Move notes to trash & restore back**
  * **Assign labels to notes**
  * **Create todo list**
- * **Upload images to note**
  * **Set color to Notes as per your priority**
 
 

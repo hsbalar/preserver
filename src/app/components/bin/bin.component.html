@@ -55,7 +55,7 @@
     <div *ngFor='let text of notes' class="{{ displayList ? 'panel panel-default ' + text.doc.color : 'panel panel-default grid-item ' + text.doc.color}}" #noteRow [attr.id]="text.doc._id">
       <div class="panel-body my-note module line-clamp">
         <p><strong>{{text.doc?.title}}</strong></p>
-        <p> {{text.doc?.note}} </p>
+        <p>{{text.doc?.note}}</p>
       </div>
       <div class="{{ 'panel-footer ' + text.doc.color}}">
         <ul class="note-footer">

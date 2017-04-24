@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
   public notes_table = NOTES_TABLE;
   public subscription:Subscription;
   public emptyHtmlMsg: boolean = false;
+  public date2MinDate: any;
 
   constructor (
       private _dragulaService: DragulaService,
@@ -55,6 +56,9 @@ export class HomeComponent implements OnInit {
       theClass: "notes-notifications notes",
       rtl: false
     };
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    this.date2MinDate = yesterday;
     _dragulaService.dropModel.subscribe((value: any) => {
       this.onDropModel(value.slice(1));
     });

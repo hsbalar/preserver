@@ -26,6 +26,7 @@ export class ArchiveComponent {
 
   public notes_table = NOTES_TABLE;
   public subscription: Subscription;
+  public date2MinDate: any;
 
   constructor (
       private _dragulaService: DragulaService,
@@ -52,7 +53,9 @@ export class ArchiveComponent {
       theClass: "notes-notifications archive",
       rtl: false
     };
-
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    this.date2MinDate = yesterday;
     _dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value.slice(1));
     });
@@ -163,8 +166,8 @@ export class ArchiveComponent {
   removeReminder(note) {
     note.doc.reminder = null;
     this._notesService.updateNote('archiveNotes', note.doc);
-    this._notesService.updateReminderTable('archiveNotes');    
-    this.refreshNotesTables();    
+    this._notesService.updateReminderTable('archiveNotes');
+    this.refreshNotesTables();
   }
 
   updateModalNote(note) {
