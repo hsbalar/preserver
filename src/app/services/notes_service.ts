@@ -26,8 +26,8 @@ export class NotesTableService {
   audio: any;
 
   constructor(private _pushNotifications: PushNotificationsService) {
-    this._pushNotifications.requestPermission();    
-    this.audio = new Audio('sound/notification.mp3');    
+    this._pushNotifications.requestPermission();
+    this.audio = new Audio('sound/notification.mp3');
   }
 
   getNotes(schema: string) {
@@ -91,7 +91,7 @@ export class NotesTableService {
 
   checkForReminderRepeatation(row, todayDate, schema) {
     let reminderDate = new Date(row.doc.reminder.date);
-      let repeatText = row.doc.reminder.repeat;
+    let repeatText = row.doc.reminder.repeat;
       if (repeatText === 'doesnotrepeat') {
         if (todayDate.getFullYear() === reminderDate.getFullYear() &&
             todayDate.getMonth() === reminderDate.getMonth() &&
@@ -100,21 +100,19 @@ export class NotesTableService {
             todayDate.getMinutes() === reminderDate.getMinutes())
             {
               this.pushNotification(row);
-              row.doc.reminder = null;
-              this.updateNote(schema, row.doc);
             }
       } else if (repeatText === 'daily') {
         if (todayDate.getHours() === reminderDate.getHours() &&
             todayDate.getMinutes() === reminderDate.getMinutes())
             {
-                this.pushNotification(row);            
+                this.pushNotification(row);
             }
       } else if (repeatText === 'weekly') {
         if (todayDate.getDay() === reminderDate.getDay() &&
             todayDate.getHours() === reminderDate.getHours() &&
             todayDate.getMinutes() === reminderDate.getMinutes())
             {
-                this.pushNotification(row);            
+                this.pushNotification(row);
             }
       } else if (repeatText === 'monthly') {
         if (todayDate.getDate() === reminderDate.getDate() &&
