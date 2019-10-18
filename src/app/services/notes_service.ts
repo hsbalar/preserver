@@ -15,6 +15,14 @@ let localDB = {
   binNotes          : new PouchDB('bin_notes_table')
 }
 
+const REPEATITION_TYPE = {
+  doesNotRepeat     : 'doesnotrepeat',
+  daily             : 'daily',
+  weekly            : 'weekly',
+  monthly           : 'monthly',
+  yearly            : 'yearly'
+}
+
 @Injectable()
 export class NotesTableService {
   notes_tables_source = new BehaviorSubject<NotesTable[]>([]);
@@ -63,13 +71,7 @@ export class NotesTableService {
   updateReminderTable(schema: string) {
     this.getNotes(schema).then(
       alldoc => {
-        let rows = alldoc.rows;
-        this.reminderTable[schema] = [];
-        rows.forEach(row => {
-          if (row.doc.reminder) {
-            this.reminderTable[schema].push(row);
-          }
-        });
+        this.reminderTable[schema] = alldoc.rows.filter((row) => row.doc.reminder);
       });
   }
 
@@ -92,7 +94,7 @@ export class NotesTableService {
   checkForReminderRepeatation(row, todayDate, schema) {
     let reminderDate = new Date(row.doc.reminder.date);
     let repeatText = row.doc.reminder.repeat;
-      if (repeatText === 'doesnotrepeat') {
+      if (repeatText === REPEATITION_TYPE.doesNotRepeat) {
         if (todayDate.getFullYear() === reminderDate.getFullYear() &&
             todayDate.getMonth() === reminderDate.getMonth() &&
             todayDate.getDate() === reminderDate.getDate() &&
@@ -101,27 +103,27 @@ export class NotesTableService {
             {
               this.pushNotification(row);
             }
-      } else if (repeatText === 'daily') {
+      } else if (repeatText === REPEATITION_TYPE.daily) {
         if (todayDate.getHours() === reminderDate.getHours() &&
             todayDate.getMinutes() === reminderDate.getMinutes())
             {
                 this.pushNotification(row);
             }
-      } else if (repeatText === 'weekly') {
+      } else if (repeatText === REPEATITION_TYPE.weekly) {
         if (todayDate.getDay() === reminderDate.getDay() &&
             todayDate.getHours() === reminderDate.getHours() &&
             todayDate.getMinutes() === reminderDate.getMinutes())
             {
                 this.pushNotification(row);
             }
-      } else if (repeatText === 'monthly') {
+      } else if (repeatText === REPEATITION_TYPE.monthly) {
         if (todayDate.getDate() === reminderDate.getDate() &&
             todayDate.getHours() === reminderDate.getHours() &&
             todayDate.getMinutes() === reminderDate.getMinutes())
             {
               this.pushNotification(row);
             }
-      } else if (repeatText === 'yearly') {
+      } else if (repeatText === REPEATITION_TYPE.yearly) {
         if (todayDate.getMonth() === reminderDate.getMonth() &&
             todayDate.getDate() === reminderDate.getDate() &&
             todayDate.getHours() === reminderDate.getHours() &&
