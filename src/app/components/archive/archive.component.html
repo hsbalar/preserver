@@ -111,7 +111,7 @@
           </h4>
         </div>
         <div class="modal-body">
-          <textarea class="form-control edit-saved-textera" #editSavedTextarea modaleditorautosize placeholder="Write a note" [(ngModel)]="editNoteDraft.note" [value]="toEditNote?.doc.note"></textarea>
+          <textarea class="form-control edit-saved-textarea" #editSavedTextarea modaleditorautosize placeholder="Write a note" [(ngModel)]="editNoteDraft.note" [value]="toEditNote?.doc.note"></textarea>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" (click)="updateModalNote(toEditNote)">Done</button>
